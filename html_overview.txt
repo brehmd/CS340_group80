@@ -1,0 +1,18 @@
+index.html
+    patients.html
+        new_patients.html
+        edit_patients.html
+    doctors.html
+        new_doctors.html
+        edit_doctors.html
+    treatments.html
+        new_treatments.html
+        edit_treatments.html
+    departments.html
+        new_departments.html
+        edit_departments.html
+    appointments.html
+        new_appointments.html
+        edit_appointments.html
+    
+    
