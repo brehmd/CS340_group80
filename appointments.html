@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Patients</title>
+    <title>Appointments</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
 
@@ -19,7 +19,7 @@
     <main>
         <div id = menu-bar>
 
-            <div class = "menu-item selected">
+            <div class = menu-item>
                 <a href = "./patients.html">View Patients</a>
             </div>
 
@@ -31,7 +31,7 @@
                 <a href = "./treatments.html">View Treatments</a>
             </div>
 
-            <div class = menu-item>
+            <div class = "menu-item selected">
                 <a href = "./appointments.html"> View Appointments</a>
             </div>
 
@@ -47,35 +47,33 @@
             <div class = table>
                 <table border="1">
                     <tr class = attribute-titles>
+                        <th>appointment_id</th>
                         <th>patient_id</th>
-                        <th width="150px">first_name</th>
-                        <th width="150px">last_name</th>
-                        <th width="50px">age</th>
-                        <th width="150px">phone_number</th>
-                        <th width="50px">esi</th>
+                        <th>doctor_id</th>
+                        <th>department_id</th>
+                        <th width="100px">appointment_date</th>
+                        <th width="300px">reason</th>
                         <th width="50px"></th>
                         <th width="50px"></th>
                     </tr>
 
-                    <tr class = "patient-info">
+                    <tr class = "appointment-info">
                         <th>1</th>
-                        <td>Dylan</td>
-                        <td>Brehm</td>
-                        <td>21</td>
-                        <td>888-888-8888</td>
-                        <td>5</td>
+                        <th>1</th>
+                        <th>1</th>
+                        <th>1</th>
+                        <td>02/14/2025</td>
+                        <td>My head hurts and I've had a runny nose for 3 weeks.</td>
                         <th><a href = "#">edit</a></th>
                         <th><a href = "#">delete</a></th>
                     </tr>
 
                     <tr id="add-new">
-                        <th><a href = "#">Add Patient</a></th>
+                        <th><a href = "#">Add Appointment</a></th>
                     </tr>
 
                 </table>
             </div>
-
-        </div>
 
         </div>
 

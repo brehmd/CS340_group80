@@ -23,6 +23,10 @@
     color: black;
 }
 
+.selected{
+    background-color: lightgrey;
+}
+
 #content{
     display: flex;
     flex-direction: column;
