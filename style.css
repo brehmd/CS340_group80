@@ -29,19 +29,41 @@
 
 #content{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     flex-wrap: wrap;
     margin-top: 20px;
     margin-left: 5px;
     justify-content: center;
 }
 
-.table{
-    margin-left:auto;
-    margin-right:auto;
-    table-layout:fixed;
-}
-
 #add-new{
     color: blue;
+}
+
+#confirm-button{
+    height: 20px;
+    border: 1px solid black;
+    border-radius: 2%;
+    margin: 5px;
+    background-color: lightblue;
+    text-align: center;
+}
+
+#confirm-button a{
+    color: black;
+    text-decoration: none;
+}
+
+#cancel-button{
+    height: 20px;
+    border: 1px solid black;
+    border-radius: 2%;
+    margin: 5px;
+    background-color: lightcoral;
+    text-align: center;
+}
+
+#cancel-button a{
+    color: black;
+    text-decoration: none;
 }

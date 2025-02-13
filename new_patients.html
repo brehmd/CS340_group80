@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Patients</title>
+    <title>Add a Patient</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
 
@@ -48,34 +48,36 @@
                 <table border="1">
                     <tr class = attribute-titles>
                         <th>patient_id</th>
-                        <th width="150px">first_name</th>
-                        <th width="150px">last_name</th>
-                        <th width="50px">age</th>
-                        <th width="150px">phone_number</th>
-                        <th width="50px">esi</th>
-                        <th width="50px"></th>
-                        <th width="50px"></th>
+                        <th>first_name</th>
+                        <th>last_name</th>
+                        <th>age</th>
+                        <th>phone_number</th>
+                        <th>esi</th>
                     </tr>
 
                     <tr class = "patient-info">
-                        <th>1</th>
-                        <td>Dylan</td>
-                        <td>Brehm</td>
-                        <td>21</td>
-                        <td>888-888-8888</td>
-                        <td>5</td>
-                        <th><a href = "./edit_patients.html">edit</a></th>
-                        <th><a href = "#">delete</a></th>
-                    </tr>
-
-                    <tr id="add-new">
-                        <th><a href = "./new_patients.html">Add Patient</a></th>
+                        <th><input id = "patient_id"></th>
+                        <td><input id = "first_name"></td>
+                        <td><input id = "last_name"></td>
+                        <td><input id = "age"></td>
+                        <td><input id = "phone_number"></td>
+                        <td><input id = "esi"></td>
                     </tr>
 
                 </table>
             </div>
+            
+            <div id="buttons">
+                <div id="confirm-button">
+                    <a href = "./patients.html">CONFIRM</a>
+                </div>
 
-        </div>
+                <div id="cancel-button">
+                    <a href = "./patients.html">CANCEL</a>
+                </div>
+            </div>
+            
+
 
         </div>
 
