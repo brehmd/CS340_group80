@@ -1,0 +1,24 @@
+.site-title a{
+    color: black;
+    text-decoration: none;
+}
+
+#menu-bar{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.menu-item{
+    height: 25px;
+    width: 200px;
+    border: 1px solid black;
+    border-radius: 2%;
+    margin: 5px;
+    background-color: lightsalmon;
+    text-align: center;
+}
+
+.menu-item a{
+    color: black;
+}
