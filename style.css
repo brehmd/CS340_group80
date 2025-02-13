@@ -22,3 +22,11 @@
 .menu-item a{
     color: black;
 }
+
+#content{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    margin-left: 5px;
+}
