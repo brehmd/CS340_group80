@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Add a Treatment</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+
+    <header>
+
+      <h1 class="site-title"><a href="./index.html">Hospital Management System</a></h1>
+
+    </header>
+
+    <main>
+        <div id = menu-bar>
+
+            <div class = "menu-item">
+                <a href = "./patients.html">View Patients</a>
+            </div>
+
+            <div class = menu-item>
+                <a href = "./doctors.html"> View Doctors</a>
+            </div>
+
+            <div class = "menu-item selected">
+                <a href = "./treatments.html">View Treatments</a>
+            </div>
+
+            <div class = menu-item>
+                <a href = "./appointments.html"> View Appointments</a>
+            </div>
+
+            <div class = menu-item>
+                <a href = "./departments.html"> View Departments</a>
+            </div>
+            
+        </div>
+
+
+        <div id = content>
+
+            <div class = table>
+                <table border="1">
+                    <tr class = attribute-titles>
+                        <th>treatment_id</th>
+                        <th>treatment_description</th>
+                        <th>cost</th>
+                    </tr>
+
+                    <tr class = "treatment-info">
+                        <th><input id = "treatment_id"></th>
+                        <td><input id = "treatment_description"></td>
+                        <td><input id = "cost"></td>
+                    </tr>
+
+                </table>
+            </div>
+            
+            <div id="buttons">
+                <div id="confirm-button">
+                    <a href = "./treatments.html">CONFIRM</a>
+                </div>
+
+                <div id="cancel-button">
+                    <a href = "./treatments.html">CANCEL</a>
+                </div>
+            </div>
+            
+
+
+        </div>
+
+    </main>

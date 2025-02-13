@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Treatments</title>
+    <title>Edit a Doctor</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
 
@@ -19,15 +19,15 @@
     <main>
         <div id = menu-bar>
 
-            <div class = menu-item>
+            <div class = "menu-item">
                 <a href = "./patients.html">View Patients</a>
             </div>
 
-            <div class = menu-item>
+            <div class = "menu-item selected">
                 <a href = "./doctors.html"> View Doctors</a>
             </div>
 
-            <div class = "menu-item selected">
+            <div class = menu-item>
                 <a href = "./treatments.html">View Treatments</a>
             </div>
 
@@ -47,26 +47,30 @@
             <div class = table>
                 <table border="1">
                     <tr class = attribute-titles>
-                        <th>treatment_id</th>
-                        <th width="400px">treatment_description</th>
-                        <th width="50px">cost</th>
-                        <th width="50px"></th>
-                        <th width="50px"></th>
+                        <th>doctor_id</th>
+                        <th>first_name</th>
+                        <th>last_name</th>
+                        <th>specialization</th>
                     </tr>
 
-                    <tr class = "treatment-info">
-                        <th>1</th>
-                        <td>Take 2 advil every 4 hours</td>
-                        <td>$0.01</td>
-                        <th><a href = "#">edit</a></th>
-                        <th><a href = "#">delete</a></th>
-                    </tr>
-
-                    <tr id="add-new">
-                        <th><a href = "#">Add Treatment</a></th>
+                    <tr class = "doctor-info">
+                        <th><input id = "doctor_id" value = "1"></th>
+                        <td><input id = "first_name" value = "Dylan"></td>
+                        <td><input id = "last_name" value = "Brehm"></td>
+                        <td><input id = "specialization" value = "Ears, Nose, and Throat (ENT)"></td>
                     </tr>
 
                 </table>
+            </div>
+            
+            <div id="buttons">
+                <div id="confirm-button">
+                    <a href = "./doctors.html">CONFIRM</a>
+                </div>
+
+                <div id="cancel-button">
+                    <a href = "./doctors.html">CANCEL</a>
+                </div>
             </div>
 
         </div>

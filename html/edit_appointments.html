@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Departments</title>
+    <title>Edit an Appointment</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
 
@@ -19,7 +19,7 @@
     <main>
         <div id = menu-bar>
 
-            <div class = menu-item>
+            <div class = "menu-item">
                 <a href = "./patients.html">View Patients</a>
             </div>
 
@@ -31,11 +31,11 @@
                 <a href = "./treatments.html">View Treatments</a>
             </div>
 
-            <div class = menu-item>
+            <div class = "menu-item selected">
                 <a href = "./appointments.html"> View Appointments</a>
             </div>
 
-            <div class = "menu-item selected">
+            <div class = menu-item>
                 <a href = "./departments.html"> View Departments</a>
             </div>
             
@@ -47,27 +47,37 @@
             <div class = table>
                 <table border="1">
                     <tr class = attribute-titles>
+                        <th>appointment_id</th>
+                        <th>patient_id</th>
+                        <th>doctor_id</th>
                         <th>department_id</th>
-                        <th width="200px">name</th>
-                        <th width="300px">location</th>
-                        <th width="50px"></th>
-                        <th width="50px"></th>
+                        <th>appointment_date</th>
+                        <th>reason</th>
                     </tr>
 
-                    <tr class = "department-info">
-                        <th>1</th>
-                        <td>The Beaver Clinic</td>
-                        <td>100 Beaver Lane Corvallis, OR 97330</td>
-                        <th><a href = "#">edit</a></th>
-                        <th><a href = "#">delete</a></th>
-                    </tr>
-
-                    <tr id="add-new">
-                        <th><a href = "#">Add Department</a></th>
+                    <tr class = "appointments-info">
+                        <th><input id = "appointment_id" value = "1"></th>
+                        <td><input id = "patient_id" value = "1"></td>
+                        <td><input id = "doctor_id" value = "1"></td>
+                        <td><input id = "department_id" value = "1"></td>
+                        <td><input id = "appointment_date" value = "02/14/2025"></td>
+                        <td><input id = "reason" value = "My head hurts and I've had a runny nose for 3 weeks."></td>
                     </tr>
 
                 </table>
             </div>
+            
+            <div id="buttons">
+                <div id="confirm-button">
+                    <a href = "./appointments.html">CONFIRM</a>
+                </div>
+
+                <div id="cancel-button">
+                    <a href = "./appointments.html">CANCEL</a>
+                </div>
+            </div>
+            
+
 
         </div>
 

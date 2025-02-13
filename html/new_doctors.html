@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Add a Doctor</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+
+    <header>
+
+      <h1 class="site-title"><a href="./index.html">Hospital Management System</a></h1>
+
+    </header>
+
+    <main>
+        <div id = menu-bar>
+
+            <div class = "menu-item">
+                <a href = "./patients.html">View Patients</a>
+            </div>
+
+            <div class = "menu-item selected">
+                <a href = "./doctors.html"> View Doctors</a>
+            </div>
+
+            <div class = menu-item>
+                <a href = "./treatments.html">View Treatments</a>
+            </div>
+
+            <div class = menu-item>
+                <a href = "./appointments.html"> View Appointments</a>
+            </div>
+
+            <div class = menu-item>
+                <a href = "./departments.html"> View Departments</a>
+            </div>
+            
+        </div>
+
+
+        <div id = content>
+
+            <div class = table>
+                <table border="1">
+                    <tr class = attribute-titles>
+                        <th>doctor_id</th>
+                        <th>first_name</th>
+                        <th>last_name</th>
+                        <th>specialization</th>
+                    </tr>
+
+                    <tr class = "doctor-info">
+                        <th><input id = "doctor_id"></th>
+                        <td><input id = "first_name"></td>
+                        <td><input id = "last_name"></td>
+                        <td><input id = "specialization"></td>
+                    </tr>
+
+                </table>
+            </div>
+            
+            <div id="buttons">
+                <div id="confirm-button">
+                    <a href = "./doctors.html">CONFIRM</a>
+                </div>
+
+                <div id="cancel-button">
+                    <a href = "./doctors.html">CANCEL</a>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
