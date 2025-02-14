@@ -36,6 +36,10 @@
     justify-content: center;
 }
 
+.text-info{
+    font-size: 1.3vw;
+}
+
 #add-new{
     color: blue;
 }
