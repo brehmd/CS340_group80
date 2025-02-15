@@ -14,5 +14,11 @@ index.html
     appointments.html
         new_appointments.html
         edit_appointments.html
+    doctors_departments.html
+        new_doctors_departments.html
+        edit_doctors_departments.html
+    patients_treatments.html
+        new_patients_treatments.html
+        edit_patients_treatments.html
     
     

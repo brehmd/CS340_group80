@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Add Patient</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../style.css">
+  </head>
+  <body>
+
+    <header>
+
+      <h1 class="site-title"><a href="../index.html">Hospital Management System </a></h1>
+      <h1 class="site-title"><a href="./patients.html">/ Patients</a></h1>
+      <h1 class="site-title"><a href="#">/ Add New</a></h1>
+
+    </header>
+
+    <main>
+        <div id = menu-bar>
+
+            <div class = "menu-item selected">
+                <a href = "../patients/patients.html">View Patients</a>
+            </div>
+
+            <div class = "menu-item">
+                <a href = "../doctors/doctors.html"> View Doctors</a>
+            </div>
+
+            <div class = menu-item>
+                <a href = "../treatments/treatments.html">View Treatments</a>
+            </div>
+
+            <div class = menu-item>
+                <a href = "../appointments/appointments.html"> View Appointments</a>
+            </div>
+
+            <div class = menu-item>
+                <a href = "../departments/departments.html"> View Departments</a>
+            </div>
+            
+            <div class = "menu-item">
+                <a href = "../patients_treatments/patients_treatments.html"> View Patients_Treatments</a>
+            </div>
+
+            <div class = menu-item>
+                <a href = "../doctors_departments/doctors_departments.html"> View Doctors_Departments</a>
+            </div>
+
+        </div>
+
+
+        <div id = content>
+
+            <div id = text-info>
+                Include all relevant information to add a new Patient entry. * are required, all else can be set to NULL with no entry upon confirmation.
+            </div>
+
+            <div id = input-table>
+                <table>
+                    <tr class = attribute-titles>
+                        <th width="25%">*first_name</th>
+                        <th width="25%">*last_name</th>
+                        <th width="10%">*age</th>
+                        <th width="30%">*phone_number</th>
+                        <th width="10%">esi_id</th>
+                    </tr>
+
+                    <tr class = "Patients-info">
+                        <td><input id = first_name class="input-attribute"></th>
+                        <td><input id = last_name class="input-attribute"></th>
+                        <td><input id = age class="input-attribute"></th>
+                        <td><input id = phone_number class="input-attribute"></th>
+                        <td><input id = esi_id class="input-attribute"></th>
+                    </tr>
+
+                </table>
+            </div>
+            
+            <div id="buttons">
+                <div id="cancel-button">
+                    <a href = "./patients.html">CANCEL</a>
+                </div>
+
+                <div id="confirm-button">
+                    <a href = "./patients.html">CONFIRM</a>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+  </body>
+</html>
