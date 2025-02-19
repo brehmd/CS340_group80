@@ -21,32 +21,32 @@
     <main>
         <div id = menu-bar>
 
-            <div class = "menu-item selected">
-                <a href = "../patients/patients.html">View Patients</a>
+            <div class = "menu-item">
+                <a href = "../patients/patients.html">Patients</a>
             </div>
 
             <div class = "menu-item">
-                <a href = "../doctors/doctors.html"> View Doctors</a>
+                <a href = "../doctors/doctors.html">Doctors</a>
             </div>
 
             <div class = menu-item>
-                <a href = "../treatments/treatments.html">View Treatments</a>
+                <a href = "../treatments/treatments.html">Treatments</a>
+            </div>
+
+            <div class = "menu-item selected">
+                <a href = "../appointments/appointments.html">Appointments</a>
             </div>
 
             <div class = menu-item>
-                <a href = "../appointments/appointments.html"> View Appointments</a>
-            </div>
-
-            <div class = menu-item>
-                <a href = "../departments/departments.html"> View Departments</a>
+                <a href = "../departments/departments.html">Departments</a>
             </div>
             
             <div class = "menu-item">
-                <a href = "../patients_treatments/patients_treatments.html"> View Patients_Treatments</a>
+                <a href = "../patients_treatments/patients_treatments.html">Patients_Treatments</a>
             </div>
 
             <div class = menu-item>
-                <a href = "../doctors_departments/doctors_departments.html"> View Doctors_Departments</a>
+                <a href = "../doctors_departments/doctors_departments.html">Doctors_Departments</a>
             </div>
 
         </div>
@@ -61,18 +61,28 @@
             <div id = input-table>
                 <table>
                     <tr class = attribute-titles>
-                        <th width="10%">*patient_id</th>
-                        <th width="10%">*doctor_id</th>
-                        <th width="10%">*department_id</th>
-                        <th width="20%">*appointment_date</th>
-                        <th width="50%">*reason</th>
+                        <th width="10%">*Patient Name</th>
+                        <th width="10%">*Doctor Name</th>
+                        <th width="20%">*Department Name</th>
+                        <th width="20%">*Date</th>
+                        <th width="40%">Reason</th>
                     </tr>
 
                     <tr class = "Appointments-info">
-                        <td><input id = patient_id class="input-attribute" value="1"></td>
-                        <td><input id = doctor_id class="input-attribute" value="1"></td>
-                        <td><input id = department_id class="input-attribute" value="1"></td>
-                        <td><input id = appointment_date class="input-attribute" value="02/14/2025"></td>
+                        <td><select id = patient_name class="input-attribute">
+                            <option value = none></option>
+                            <option value = 1 selected>Dylan Brehm</option>
+                        </select></td>
+                        <td><select id = doctor_name class="input-attribute">
+                            <option value = none></option>
+                            <option value = 1 selected>Dylan Brehm</option>
+                        </select></td>
+                        <td><select id = department_name class="input-attribute">
+                            <option value = none></option>
+                            <option value = 1 selected>Beaver Clinic</option>
+                        </select></td>
+                        <!-- how to set default value for datetime? -->
+                        <td><input type="datetime-local" id = appointment_date class="input-attribute" value="02/14/2025 --:-- --"></td> 
                         <td><input id = reason class="input-attribute" value="Ongoing sore throat and sick roommates."></td>
                     </tr>
 
