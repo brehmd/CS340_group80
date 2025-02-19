@@ -21,31 +21,31 @@
         <div id = menu-bar>
 
             <div class = "menu-item selected">
-                <a href = "../patients/patients.html">View Patients</a>
+                <a href = "../patients/patients.html">Patients</a>
             </div>
 
             <div class = "menu-item">
-                <a href = "../doctors/doctors.html"> View Doctors</a>
+                <a href = "../doctors/doctors.html">Doctors</a>
             </div>
 
             <div class = menu-item>
-                <a href = "../treatments/treatments.html">View Treatments</a>
+                <a href = "../treatments/treatments.html">Treatments</a>
             </div>
 
             <div class = menu-item>
-                <a href = "../appointments/appointments.html"> View Appointments</a>
+                <a href = "../appointments/appointments.html">Appointments</a>
             </div>
 
             <div class = menu-item>
-                <a href = "../departments/departments.html"> View Departments</a>
+                <a href = "../departments/departments.html">Departments</a>
             </div>
             
             <div class = "menu-item">
-                <a href = "../patients_treatments/patients_treatments.html"> View Patients_Treatments</a>
+                <a href = "../patients_treatments/patients_treatments.html">Patients_Treatments</a>
             </div>
 
             <div class = menu-item>
-                <a href = "../doctors_departments/doctors_departments.html"> View Doctors_Departments</a>
+                <a href = "../doctors_departments/doctors_departments.html">Doctors_Departments</a>
             </div>
 
         </div>
@@ -54,6 +54,13 @@
         <div id = content>
 
             <div id = search-bar>
+                <select name = "filter-attributes" id = "filter-attributes">
+                    <option value="first_name">First Name</option>
+                    <option value="last_name">Last Name</option>
+                    <option value="age">Age</option>
+                    <option value="phone_number">Phone Number</option>
+                    <option value="esi">ESI</option>
+                </select>
                 <input id = search_entry>
                 <a href = "#">Filter</a>
             </div>
@@ -61,12 +68,12 @@
             <div id = display-table>
                 <table>
                     <tr class = attribute-titles>
-                        <th width="10%">patient_id</th>
-                        <th width="15%">first_name</th>
-                        <th width="15%">last_name</th>
-                        <th width="10%">age</th>
-                        <th width="20%">phone_number</th>
-                        <th width="10%">esi_id</th>
+                        <th width="5%">ID</th>
+                        <th width="15%">First Name</th>
+                        <th width="15%">Last Name</th>
+                        <th width="10%">Age</th>
+                        <th width="20%">Phone Number</th>
+                        <th width="15%">ESI</th>
                         <th width="10%"></th>
                         <th width="10%"></th>
                     </tr>

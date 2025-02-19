@@ -22,31 +22,31 @@
         <div id = menu-bar>
 
             <div class = "menu-item selected">
-                <a href = "../patients/patients.html">View Patients</a>
+                <a href = "../patients/patients.html">Patients</a>
             </div>
 
             <div class = "menu-item">
-                <a href = "../doctors/doctors.html"> View Doctors</a>
+                <a href = "../doctors/doctors.html">Doctors</a>
             </div>
 
             <div class = menu-item>
-                <a href = "../treatments/treatments.html">View Treatments</a>
+                <a href = "../treatments/treatments.html">Treatments</a>
             </div>
 
             <div class = menu-item>
-                <a href = "../appointments/appointments.html"> View Appointments</a>
+                <a href = "../appointments/appointments.html">Appointments</a>
             </div>
 
             <div class = menu-item>
-                <a href = "../departments/departments.html"> View Departments</a>
+                <a href = "../departments/departments.html">Departments</a>
             </div>
             
             <div class = "menu-item">
-                <a href = "../patients_treatments/patients_treatments.html"> View Patients_Treatments</a>
+                <a href = "../patients_treatments/patients_treatments.html">Patients_Treatments</a>
             </div>
 
             <div class = menu-item>
-                <a href = "../doctors_departments/doctors_departments.html"> View Doctors_Departments</a>
+                <a href = "../doctors_departments/doctors_departments.html">Doctors_Departments</a>
             </div>
 
         </div>
@@ -61,19 +61,26 @@
             <div id = input-table>
                 <table>
                     <tr class = attribute-titles>
-                        <th width="25%">*first_name</th>
-                        <th width="25%">*last_name</th>
-                        <th width="10%">*age</th>
-                        <th width="30%">*phone_number</th>
-                        <th width="10%">esi_id</th>
+                        <th width="25%">*First Name</th>
+                        <th width="25%">*Last Name</th>
+                        <th width="10%">*Age</th>
+                        <th width="30%">*Phone Number</th>
+                        <th width="10%">ESI</th>
                     </tr>
 
                     <tr class = "Patients-info">
-                        <td><input id = first_name class="input-attribute" value = "Dylan"></th>
-                        <td><input id = last_name class="input-attribute" value = "Brehm"></th>
-                        <td><input id = age class="input-attribute" value = "21"></th>
-                        <td><input id = phone_number class="input-attribute" value = "888-888-8888"></th>
-                        <td><input id = esi_id class="input-attribute" value=""></th>
+                        <td><input id = first_name class="input-attribute" value = "Dylan"></td>
+                        <td><input id = last_name class="input-attribute" value = "Brehm"></td>
+                        <td><input id = age class="input-attribute" value = "21"></td>
+                        <td><input id = phone_number class="input-attribute" value = "888-888-8888"></td>
+                        <td><select id = esi_id class="input-attribute">
+                            <option value = "none" selected></option>
+                            <option value = "1">1 - Critical</option>
+                            <option value = "2">2 - Severe</option>
+                            <option value = "3">3 - Moderate</option>
+                            <option value = "4">4 - Mild</option>
+                            <option value = "5">5 - Non-Urgent</option>
+                        </select></td>
                     </tr>
 
                 </table>
