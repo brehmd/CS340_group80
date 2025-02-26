@@ -27,7 +27,12 @@ app.get('/', function(req, res)
     
 app.get('/patients.hbs', function(req, res)        
     {
-        res.render('patients', {is_patients: true});      
+        let query1 = "SELECT * FROM Patients;";
+        db.pool.query(query1, function(error, rows, fields){
+
+            res.render('patients', {is_patients: true, data: rows});               
+        })
+             
     });    
 
 /*

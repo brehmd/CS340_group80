@@ -24,68 +24,27 @@
                 <th width="10%"></th>
                 <th width="10%"></th>
             </tr>
+            
 
+            {{#each data}}
             <tr class = "Patients-info">
-                <th>1</th>
-                <td>Alice</td>
-                <td>Smith</td>
-                <td>45</td>
-                <td>555-1234</td>
-                <td>2 - Severe</td>
-                <th><a href = "./edit_patients.html#1">edit</a></th>
+                <th>{{this.patient_id}}</th>
+                <td>{{this.first_name}}</td>
+                <td>{{this.last_name}}</td>
+                <td>{{this.age}}</td>
+                <td>{{this.phone_number}}</td>
+                <td>{{this.esi_level}}</td>
+                <th><a href = "#">edit</a></th>
                 <th><a href = "#">delete</a></th>
             </tr>
-
-            <tr class = "Patients-info">
-                <th>2</th>
-                <td>John</td>
-                <td>Doe</td>
-                <td>30</td>
-                <td>555-5678</td>
-                <td>3 - Moderate</td>
-                <th><a href = "./edit_patients.html#2">edit</a></th>
-                <th><a href = "#">delete</a></th>
-            </tr>
-
-            <tr class = "Patients-info">
-                <th>3</th>
-                <td>Maria</td>
-                <td>Lopez</td>
-                <td>67</td>
-                <td>555-9012</td>
-                <td>1 - Critical</td>
-                <th><a href = "./edit_patients.html#3">edit</a></th>
-                <th><a href = "#">delete</a></th>
-            </tr>
-
-            <tr class = "Patients-info">
-                <th>4</th>
-                <td>David</td>
-                <td>Kim</td>
-                <td>52</td>
-                <td>555-3456</td>
-                <td>4 - Mild</td>
-                <th><a href = "./edit_patients.html#4">edit</a></th>
-                <th><a href = "#">delete</a></th>
-            </tr>
-
-            <tr class = "Patients-info">
-                <th>5</th>
-                <td>Emily</td>
-                <td>Zhang</td>
-                <td>26</td>
-                <td>555-7890</td>
-                <td>2 - Severe</td>
-                <th><a href = "./edit_patients.html#5">edit</a></th>
-                <th><a href = "#">delete</a></th>
-            </tr>
+            {{/each}}
 
         </table>
     </div>
     
     <div id="buttons">
         <div id = "add-new-button">
-            <a href = "./new_patients.html">Add Patients</a>
+            <a href = "#">Add Patients</a>
         </div>
     </div>
             
