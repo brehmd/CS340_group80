@@ -20,10 +20,15 @@ app.set('view engine', '.hbs');                 // Tell express to use the handl
 /*
     ROUTES
 */
-app.get('/', function(req, res)                 // This is the basic syntax for what is called a 'route'
+app.get('/', function(req, res)        
     {
-        res.render('index');      // This function literally sends the string "The server is running!" to the computer
-    });                                         // requesting the web site.
+        res.render('index', {is_patients: false});      
+    });
+    
+app.get('/patients.hbs', function(req, res)        
+    {
+        res.render('patients', {is_patients: true});      
+    });    
 
 /*
     LISTENER

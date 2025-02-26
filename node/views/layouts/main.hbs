@@ -11,38 +11,41 @@
     <header>
 
       <h1 class="site-title"><a href="/">Hospital Management System</a></h1>
-
+      {{#if is_patients}}
+      <h1 class="site-title"><a href="/patients.hbs">/ Patients</a></h1>
+      {{/if}}
     </header>
 
     <main>
         <div id = menu-bar>
 
-            <div class = menu-item>
-                <a href = "./patients/patients.html">Patients</a>
+            
+            <div class = "menu-item {{#if is_patients}}selected{{/if}}">
+                <a href = "./patients.hbs">Patients</a>
             </div>
 
-            <div class = menu-item>
-                <a href = "./doctors/doctors.html">Doctors</a>
+            <div class = "menu-item {{#if is_doctors}}selected{{/if}}">
+                <a href = "./doctors.hbs">Doctors</a>
             </div>
 
-            <div class = menu-item>
-                <a href = "./treatments/treatments.html">Treatments</a>
+            <div class = "menu-item {{#if is_treatments}}selected{{/if}}">
+                <a href = "./treatments.hbs">Treatments</a>
             </div>
 
-            <div class = menu-item>
-                <a href = "./appointments/appointments.html">Appointments</a>
+            <div class = "menu-item {{#if is_appointments}}selected{{/if}}">
+                <a href = "./appointments.hbs">Appointments</a>
             </div>
 
-            <div class = menu-item>
-                <a href = "./departments/departments.html">Departments</a>
+            <div class = "menu-item {{#if is_departments}}selected{{/if}}">
+                <a href = "./departments.hbs">Departments</a>
             </div>
 
-            <div class = menu-item>
-                <a href = "./patients_treatments/patients_treatments.html">Patients_Treatments</a>
+            <div class = "menu-item {{#if is_patients_treatments}}selected{{/if}}">
+                <a href = "./patient_treatments.hbs">Patients_Treatments</a>
             </div>
 
-            <div class = menu-item>
-                <a href = "./doctors_departments/doctors_departments.html">Doctors_Departments</a>
+            <div class = "menu-item {{#if is_doctors_departments}}selected{{/if}}">
+                <a href = "./doctors_departments.hbs">Doctors_Departments</a>
             </div>
             
         </div>
