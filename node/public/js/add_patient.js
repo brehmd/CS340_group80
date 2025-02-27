@@ -6,7 +6,7 @@ let cancelButton = document.getElementById('cancel-button');
 addPatientButton.addEventListener("click", function (e) {
     
     // Prevent the form from submitting
-    // e.preventDefault();
+    e.preventDefault();
 
     // Get form fields we need to get data from
     let inputFirstName = document.getElementById("first_name");
@@ -40,15 +40,16 @@ addPatientButton.addEventListener("click", function (e) {
     xhttp.onreadystatechange = () => {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
 
-            // Add the new data to the table
-            addRowToTable(xhttp.response);
-
             // Clear the input fields for another transaction
             inputFirstName.value = '';
             inputLastName.value = '';
             inputAge.value = '';
             inputPhoneNumber.value = '';
             inputEsiLevel.value = '';
+
+
+            // Add the new data to the table
+            window.open("/patients.hbs", "_self")
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
             console.log("There was an error with the input.")
@@ -57,11 +58,9 @@ addPatientButton.addEventListener("click", function (e) {
 
     // Send the request and wait for the response
     xhttp.send(JSON.stringify(data));
-
-    window.open("/patients.hbs", "_self")
 })
 
 cancelButton.addEventListener("click", function(e){
-    // e.preventDefault();
+    e.preventDefault();
     window.open("/patients.hbs", "_self")
 })

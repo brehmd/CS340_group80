@@ -55,7 +55,7 @@ app.post('/add_patients-ajax', function(req, res)
     // }
 
     // Create the query and run it on the database
-    query1 = `INSERT INTO Patients (first_name, last_name, age, phone_number, esi_level) VALUES ('${data.first_name}', '${data.last_name}', ${data.age}, ${data.phone_number}, ${data.esi_level})`;
+    query1 = `INSERT INTO Patients (first_name, last_name, age, phone_number, esi_level) VALUES ('${data.first_name}', '${data.last_name}', ${data.age}, '${data.phone_number}', '${data.esi_level}')`;
     db.pool.query(query1, function(error, rows, fields){
 
         // Check to see if there was an error
