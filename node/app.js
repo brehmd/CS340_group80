@@ -33,7 +33,60 @@ app.get('/patients.hbs', function(req, res)
             res.render('patients', {is_patients: true, data: rows});               
         })
              
-    });    
+    });
+
+app.get('/add_patients.hbs', function(req, res)        
+    {
+        res.render('add_patients', {is_patients: true}); 
+    });
+
+// app.js - ROUTES section
+
+app.post('/add_patients-ajax', function(req, res) 
+{
+    // Capture the incoming data and parse it back to a JS object
+    let data = req.body;
+
+    // // Capture NULL values
+    // let esi_level = parseInt(data.esi_level);
+    // if (isNaN(esi_level))
+    // {
+    //     esi_level = 'NULL' //does this need to be NULL??
+    // }
+
+    // Create the query and run it on the database
+    query1 = `INSERT INTO Patients (first_name, last_name, age, phone_number, esi_level) VALUES ('${data.first_name}', '${data.last_name}', ${data.age}, ${data.phone_number}, ${data.esi_level})`;
+    db.pool.query(query1, function(error, rows, fields){
+
+        // Check to see if there was an error
+        if (error) {
+
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error)
+            res.sendStatus(400);
+        }
+        else
+        {
+            // If there was no error, perform a SELECT * on bsg_people
+            query2 = `SELECT * FROM Patients;`;
+            db.pool.query(query2, function(error, rows, fields){
+
+                // If there was an error on the second query, send a 400
+                if (error) {
+                    
+                    // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                // If all went well, send the results of the query back.
+                else
+                {
+                    res.send(rows);
+                }
+            })
+        }
+    })
+});
 
 /*
     LISTENER

@@ -1,0 +1,43 @@
+<div id = content>
+
+    <div id = text-info>
+        Include all relevant information to add a new Patient entry. * are required, all else can be set to NULL with no entry upon confirmation.
+    </div>
+
+    <div id = input-table>
+        <table>
+            <tr class = attribute-titles>
+                <th width="25%">*First Name</th>
+                <th width="25%">*Last Name</th>
+                <th width="10%">*Age</th>
+                <th width="30%">*Phone Number</th>
+                <th width="10%">*ESI</th>
+            </tr>
+
+            <tr id = "Patients-input">
+                <td><input name = first_name id = first_name class="input-attribute"></td>
+                <td><input name = last_name id = last_name class="input-attribute"></td>
+                <td><input name = age id = age class="input-attribute"></td>
+                <td><input name = phone_number id = phone_number class="input-attribute"></td>
+                <td><select name = esi_level id = esi_level class="input-attribute">
+                    <option value = "" selected></option>
+                    <option value = "1">1 - Critical</option>
+                    <option value = "2">2 - Severe</option>
+                    <option value = "3">3 - Moderate</option>
+                    <option value = "4">4 - Mild</option>
+                    <option value = "5">5 - Non-Urgent</option>
+                </select></td>
+            </tr>
+
+        </table>
+    </div>
+    
+    <div id="buttons">
+        <button id="cancel-button" type = "button">CANCEL</button>
+
+        <button id="confirm-button" type = "button">CONFIRM</button>
+    </div>
+
+</div>
+
+<script src="./js/add_patient.js"></script>
