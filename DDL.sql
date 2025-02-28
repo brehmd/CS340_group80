@@ -34,14 +34,14 @@ CREATE TABLE Departments (
 
 CREATE TABLE Appointments (
     appointment_id INT PRIMARY KEY AUTO_INCREMENT,
-    patient_id INT NOT NULL,
-    doctor_id INT NOT NULL,
+    patient_id INT NULL, -- Changed to NULL to allow flexibility in scheduling
+    doctor_id INT NULL, -- Changed to NULL to allow department-based scheduling
     department_id INT NOT NULL,
     appointment_date DATE NOT NULL,
     appointment_time TIME NOT NULL, -- Added missing time column
     reason TEXT NOT NULL, -- Ensured NOT NULL as per schema
-    FOREIGN KEY (patient_id) REFERENCES Patients(patient_id) ON DELETE CASCADE,
-    FOREIGN KEY (doctor_id) REFERENCES Doctors(doctor_id) ON DELETE CASCADE,
+    FOREIGN KEY (patient_id) REFERENCES Patients(patient_id) ON DELETE SET NULL,
+    FOREIGN KEY (doctor_id) REFERENCES Doctors(doctor_id) ON DELETE SET NULL,
     FOREIGN KEY (department_id) REFERENCES Departments(department_id) ON DELETE CASCADE
 );
 
@@ -65,8 +65,4 @@ CREATE TABLE Doctors_Departments (
     department_id INT NOT NULL,
     FOREIGN KEY (doctor_id) REFERENCES Doctors(doctor_id) ON DELETE CASCADE,
     FOREIGN KEY (department_id) REFERENCES Departments(department_id) ON DELETE CASCADE
-<<<<<<< HEAD
 );
-=======
-);
->>>>>>> a5bb977fdd8296f5add856ecc9816e584e2919b9

@@ -11,13 +11,16 @@ SELECT patient_id,
 FROM Patients;
 
 -- Retrieve all doctors
-SELECT * FROM Doctors;
+SELECT doctor_id, CONCAT(first_name, ' ', last_name) AS doctor_name, specialization 
+FROM Doctors;
 
 -- Retrieve all departments
-SELECT * FROM Departments;
+SELECT department_id, name, location 
+FROM Departments;
 
 -- Retrieve all treatments
-SELECT * FROM Treatments;
+SELECT treatment_id, description, cost 
+FROM Treatments;
 
 -- Retrieve all appointments with names instead of IDs (Ensuring user-friendly FK representation)
 SELECT a.appointment_id, 
@@ -25,6 +28,7 @@ SELECT a.appointment_id,
        CONCAT(d.first_name, ' ', d.last_name) AS doctor_name, 
        dept.name AS department_name, 
        a.appointment_date, 
+       a.appointment_time, 
        a.reason
 FROM Appointments a
 LEFT JOIN Patients p ON a.patient_id = p.patient_id
@@ -32,21 +36,30 @@ LEFT JOIN Doctors d ON a.doctor_id = d.doctor_id
 LEFT JOIN Departments dept ON a.department_id = dept.department_id;
 
 -- Insert Queries using subqueries to dynamically retrieve FK values
-INSERT INTO Appointments (patient_id, doctor_id, department_id, appointment_date, reason)
+INSERT INTO Appointments (patient_id, doctor_id, department_id, appointment_date, appointment_time, reason)
 VALUES 
     ((SELECT patient_id FROM Patients WHERE first_name = ? AND last_name = ?),
      (SELECT doctor_id FROM Doctors WHERE first_name = ? AND last_name = ?),
-     (SELECT department_id FROM Departments WHERE name = ?), ?, ?),
-    ((SELECT patient_id FROM Patients WHERE first_name = ? AND last_name = ?),
-     (SELECT doctor_id FROM Doctors WHERE first_name = ? AND last_name = ?),
-     (SELECT department_id FROM Departments WHERE name = ?), ?, ?); -- Additional patient with multiple appointments
+     (SELECT department_id FROM Departments WHERE name = ?), ?, ?, ?);
+
+-- Insert for intersection tables
+INSERT INTO Patients_Treatments (patient_id, treatment_id)
+VALUES 
+    ((SELECT patient_id FROM Patients WHERE first_name = ? AND last_name = ?), 
+     (SELECT treatment_id FROM Treatments WHERE description = ?));
+
+INSERT INTO Doctors_Departments (doctor_id, department_id)
+VALUES 
+    ((SELECT doctor_id FROM Doctors WHERE first_name = ? AND last_name = ?), 
+     (SELECT department_id FROM Departments WHERE name = ?));
 
 -- Safe Update for Appointments (Allowing NULL for FK safety)
 UPDATE Appointments
 SET patient_id = COALESCE((SELECT patient_id FROM Patients WHERE first_name = ? AND last_name = ?), NULL),
     doctor_id = COALESCE((SELECT doctor_id FROM Doctors WHERE first_name = ? AND last_name = ?), NULL),
     department_id = (SELECT department_id FROM Departments WHERE name = ?),
-    appointment_date = ?,
+    appointment_date = ?, 
+    appointment_time = ?, 
     reason = ?
 WHERE appointment_id = ?;
 
@@ -64,7 +77,7 @@ WHERE dept.name = ?;
 -- Retrieve treatments for a specific patient (Ensuring names instead of IDs)
 SELECT pt.patient_treatment_id, 
        CONCAT(p.first_name, ' ', p.last_name) AS patient_name, 
-       t.treatment_description, 
+       t.description AS treatment_description, 
        t.cost
 FROM Patients_Treatments pt
 JOIN Patients p ON pt.patient_id = p.patient_id
@@ -75,12 +88,12 @@ WHERE p.first_name = ? AND p.last_name = ?;
 SELECT patient_id, CONCAT(first_name, ' ', last_name) AS patient_name FROM Patients;
 SELECT doctor_id, CONCAT(first_name, ' ', last_name, ' - ', specialization) AS doctor_info FROM Doctors;
 SELECT department_id, name FROM Departments;
-SELECT treatment_id, treatment_description FROM Treatments;
+SELECT treatment_id, description FROM Treatments;
 
 -- Retrieve all Patients_Treatments with names instead of IDs
 SELECT pt.patient_treatment_id, 
        CONCAT(p.first_name, ' ', p.last_name) AS patient_name, 
-       t.treatment_description
+       t.description AS treatment_description
 FROM Patients_Treatments pt
 JOIN Patients p ON pt.patient_id = p.patient_id
 JOIN Treatments t ON pt.treatment_id = t.treatment_id;
@@ -103,13 +116,13 @@ VALUES (?, ?, ?);
 INSERT INTO Departments (name, location)
 VALUES (?, ?);
 
-INSERT INTO Treatments (treatment_description, cost)
+INSERT INTO Treatments (description, cost)
 VALUES (?, ?);
 
 -- Update patient treatment relationships safely
 UPDATE Patients_Treatments
 SET patient_id = (SELECT patient_id FROM Patients WHERE first_name = ? AND last_name = ?),
-    treatment_id = (SELECT treatment_id FROM Treatments WHERE treatment_description = ?)
+    treatment_id = (SELECT treatment_id FROM Treatments WHERE description = ?)
 WHERE patient_treatment_id = ?;
 
 -- Safe Deletion with Cascading Constraints
