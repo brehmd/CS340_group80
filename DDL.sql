@@ -65,4 +65,8 @@ CREATE TABLE Doctors_Departments (
     department_id INT NOT NULL,
     FOREIGN KEY (doctor_id) REFERENCES Doctors(doctor_id) ON DELETE CASCADE,
     FOREIGN KEY (department_id) REFERENCES Departments(department_id) ON DELETE CASCADE
+<<<<<<< HEAD
 );
+=======
+);
+>>>>>>> a5bb977fdd8296f5add856ecc9816e584e2919b9
