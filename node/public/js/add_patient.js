@@ -22,6 +22,12 @@ addPatientButton.addEventListener("click", function (e) {
     let phoneNumberValue = inputPhoneNumber.value;
     let esiLevelValue = inputEsiLevel.value;
 
+    if (!firstNameValue || !lastNameValue || !ageValue || !phoneNumberValue || !esiLevelValue) {
+        // Display an error message
+        alert('All fields are required. Please fill in all the fields before submitting.');
+        return; // Stop the function execution if any field is empty
+    }
+
     // Put our data we want to send in a javascript object
     let data = {
         first_name: firstNameValue,
@@ -30,7 +36,7 @@ addPatientButton.addEventListener("click", function (e) {
         phone_number: phoneNumberValue,
         esi_level: esiLevelValue
     }
-    
+
     // Setup our AJAX request
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", "/add_patients-ajax", true);
@@ -49,7 +55,7 @@ addPatientButton.addEventListener("click", function (e) {
 
 
             // Add the new data to the table
-            window.open("/patients.hbs", "_self")
+            window.open("/patients.hbs", "_self");
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
             console.log("There was an error with the input.")

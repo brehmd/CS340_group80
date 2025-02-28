@@ -58,11 +58,6 @@ header h1{
     width: 60%;
 }
 
-/* #search-bar a{
-    color: black;
-    text-decoration: none;
-} */
-
 table{
     width: 100%;
 }
@@ -88,6 +83,10 @@ select.input-attribute{
     justify-content: center;
 }
 
+#buttons a{
+    width:100%;
+}
+
 #add-new-button{
     height: 20px;
     width: 100%;
@@ -96,11 +95,6 @@ select.input-attribute{
     margin: 5px;
     background-color: lightblue;
     text-align: center;
-}
-
-#add-new-button a{
-    color: black;
-    text-decoration: none;
 }
 
 #confirm-button{

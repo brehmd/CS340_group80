@@ -1,0 +1,51 @@
+<div id="content">
+    <input type="hidden" id="patient_id" name="patient_id" value="{{data.patient_id}}">
+
+    <div id="text-info">
+        Include all relevant information to update a Patient entry. * are required, all else can be set to NULL with no entry upon confirmation.
+    </div>
+
+    <div id="input-table">
+        <table>
+            <tr class="attribute-titles">
+                <th width="25%">*First Name</th>
+                <th width="25%">*Last Name</th>
+                <th width="10%">*Age</th>
+                <th width="30%">*Phone Number</th>
+                <th width="10%">*ESI</th>
+            </tr>
+
+            <tr>
+                <td>{{data.first_name}}</td>
+                <td>{{data.last_name}}</td>
+                <td>{{data.age}}</td>
+                <td>{{data.phone_number}}</td>
+                <td>{{data.esi_level}}</td>
+            </tr>
+
+            <tr id="Patients-input">
+                <td><input type="text" name="first_name" id="first_name" class="input-attribute"></td>
+                <td><input type="text" name="last_name" id="last_name" class="input-attribute"></td>
+                <td><input type="number" name="age" id="age" class="input-attribute"></td>
+                <td><input type="text" name="phone_number" id="phone_number" class="input-attribute"></td>
+                <td>
+                    <select name="esi_level" id="esi_level" class="input-attribute">
+                        <option value=""></option>
+                        <option value="1 - Emergency">1 - Emergency</option>
+                        <option value="2 - Urgent">2 - Urgent</option>
+                        <option value="3 - Moderate">3 - Moderate</option>
+                        <option value="4 - Mild">4 - Mild</option>
+                        <option value="5 - Non-Urgent">5 - Non-Urgent</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </div>
+    
+    <div id="buttons">
+        <button id="cancel-button" type="button">CANCEL</button>
+        <button id="confirm-button" type="button">CONFIRM</button>
+    </div>
+</div>
+
+<script src="./js/update_patient.js"></script>

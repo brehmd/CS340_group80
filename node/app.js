@@ -14,8 +14,10 @@ var db = require('./database/db-connector')
 // handlebars
 const { engine } = require('express-handlebars');
 var exphbs = require('express-handlebars');     // Import express-handlebars
+
 app.engine('.hbs', engine({extname: ".hbs"}));  // Create an instance of the handlebars engine to process templates
 app.set('view engine', '.hbs');                 // Tell express to use the handlebars engine whenever it encounters a *.hbs file.
+
 
 /*
     ROUTES
@@ -48,6 +50,18 @@ app.get('/patients.hbs', function(req, res)
 app.get('/add_patients.hbs', function(req, res)        
     {
         res.render('add_patients', {is_patients: true}); 
+    });
+
+app.get('/update_patients.hbs', function(req, res)        
+    {
+        let patient_id = parseInt(req.query.patient_id);
+        query1 = `SELECT * FROM Patients WHERE patient_id = ?`
+        db.pool.query(query1, [patient_id], function(error, rows, fields){
+
+            // console.log(rows[0])
+            res.render('update_patients', {is_patients: true, data: rows[0]});                
+        })
+        
     });
 
 app.post('/add_patients-ajax', function(req, res) 
@@ -94,6 +108,24 @@ app.post('/add_patients-ajax', function(req, res)
             })
         }
     })
+});
+
+app.put('/put-patient-ajax', function(req, res, next) {
+    let data = req.body;
+    let patient_id = parseInt(data.patient_id);
+    let age = parseInt(data.age);
+
+    let query1 = `UPDATE Patients SET first_name = ?, last_name = ?, age = ?, phone_number = ?, esi_level = ? WHERE patient_id = ?`;
+
+    // Run the query
+    db.pool.query(query1, [data.first_name, data.last_name, age, data.phone_number, data.esi_level, patient_id], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.sendStatus(204);
+        }
+    });
 });
 
 app.delete('/delete-patients-ajax/', function(req,res,next){

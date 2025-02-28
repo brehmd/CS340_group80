@@ -11,7 +11,7 @@
         <input type="text" name=search_entry id = search_entry>
         <input type="submit">
         <a href="/patients.hbs"><button type="button">Reset</button></a>
-    </div>
+    </form>
 
     <div id = display-table>
         <table>
@@ -28,15 +28,22 @@
             
 
             {{#each data}}
-            <tr data-value={{this.patient_id}} class = "Patients-info">
-                <th>{{this.patient_id}}</th>
+            <tr data-value="{{this.patient_id}}" class="Patients-info">
+                <th id="patient_id">{{this.patient_id}}</th>
                 <td>{{this.first_name}}</td>
                 <td>{{this.last_name}}</td>
                 <td>{{this.age}}</td>
                 <td>{{this.phone_number}}</td>
                 <td>{{this.esi_level}}</td>
-                <th><a href = "#">edit</a></th>
-                <th><button onclick="deletePatient({{this.patient_id}})">Delete</button></th>
+                <th>
+                    <form id = update-patient method="GET" action="/update_patients.hbs">
+                        <input type="hidden" name="patient_id" value="{{this.patient_id}}">
+                        <input type="submit" value="Update">
+                    </form>
+                </th>
+                <th>
+                    <button onclick="deletePatient({{this.patient_id}})">Delete</button>
+                </th>
             </tr>
             {{/each}}
 
@@ -46,9 +53,7 @@
     <script src="./js/delete_patient.js"></script>
     
     <div id="buttons">
-        <div id = "add-new-button">
-            <a href = "/add_patients.hbs">Add Patients</a>
-        </div>
+        <a href = "/add_patients.hbs"><button type="button" id = "add-new-button">Add Patients</button></a>
     </div>
             
 
