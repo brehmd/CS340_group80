@@ -27,10 +27,20 @@ app.get('/', function(req, res)
     
 app.get('/patients.hbs', function(req, res)        
     {
-        let query1 = "SELECT * FROM Patients;";
+        let query1;
+        if (req.query.search_entry === undefined){
+            query1 = "SELECT * FROM Patients;";
+        }
+        
+        else{
+            query1 = `SELECT * FROM Patients WHERE ${req.query.filter_attributes} LIKE "${req.query.search_entry}%"`
+        }
+
         db.pool.query(query1, function(error, rows, fields){
 
-            res.render('patients', {is_patients: true, data: rows});               
+            let patients = rows;
+
+            res.render('patients', {is_patients: true, data: patients});               
         })
              
     });

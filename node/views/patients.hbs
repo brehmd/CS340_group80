@@ -1,15 +1,16 @@
 <div id = content>
 
-    <div id = search-bar>
-        <select name = "filter-attributes" id = "filter-attributes">
+    <form id = search-bar method="GET" action="/patients.hbs">
+        <select name = "filter_attributes" id = "filter_attributes">
             <option value="first_name">First Name</option>
             <option value="last_name">Last Name</option>
             <option value="age">Age</option>
             <option value="phone_number">Phone Number</option>
-            <option value="esi">ESI</option>
+            <option value="esi_level">ESI</option>
         </select>
-        <input id = search_entry>
-        <a href = "#">Filter</a>
+        <input type="text" name=search_entry id = search_entry>
+        <input type="submit">
+        <a href="/patients.hbs"><button type="button">Reset</button></a>
     </div>
 
     <div id = display-table>

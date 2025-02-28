@@ -54,14 +54,14 @@ header h1{
     width: 30%;
 }
 
-#search-bar input{
+#search-bar #search_entry{
     width: 60%;
 }
 
-#search-bar a{
+/* #search-bar a{
     color: black;
     text-decoration: none;
-}
+} */
 
 table{
     width: 100%;
