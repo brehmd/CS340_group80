@@ -50,8 +50,6 @@ app.get('/add_patients.hbs', function(req, res)
         res.render('add_patients', {is_patients: true}); 
     });
 
-// app.js - ROUTES section
-
 app.post('/add_patients-ajax', function(req, res) 
 {
     // Capture the incoming data and parse it back to a JS object
@@ -97,6 +95,37 @@ app.post('/add_patients-ajax', function(req, res)
         }
     })
 });
+
+app.delete('/delete-patients-ajax/', function(req,res,next){
+    let data = req.body;
+    let patient_id = parseInt(data.id);
+    let delete_patients_treatments = `DELETE FROM Patients_Treatments WHERE patient_id = ?`;
+    let delete_patients= `DELETE FROM Patients WHERE patient_id = ?`;
+  
+  
+          // Run the 1st query
+          db.pool.query(delete_patients_treatments, [patient_id], function(error, rows, fields){
+              if (error) {
+  
+              // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+              console.log(error);
+              res.sendStatus(400);
+              }
+  
+              else
+              {
+                  // Run the second query
+                  db.pool.query(delete_patients, [patient_id], function(error, rows, fields) {
+  
+                      if (error) {
+                          console.log(error);
+                          res.sendStatus(400);
+                      } else {
+                          res.sendStatus(204);
+                      }
+                  })
+              }
+})});
 
 /*
     LISTENER

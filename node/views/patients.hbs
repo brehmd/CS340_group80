@@ -28,7 +28,7 @@
             
 
             {{#each data}}
-            <tr class = "Patients-info">
+            <tr data-value={{this.patient_id}} class = "Patients-info">
                 <th>{{this.patient_id}}</th>
                 <td>{{this.first_name}}</td>
                 <td>{{this.last_name}}</td>
@@ -36,12 +36,14 @@
                 <td>{{this.phone_number}}</td>
                 <td>{{this.esi_level}}</td>
                 <th><a href = "#">edit</a></th>
-                <th><a href = "#">delete</a></th>
+                <th><button onclick="deletePatient({{this.patient_id}})">Delete</button></th>
             </tr>
             {{/each}}
 
         </table>
     </div>
+
+    <script src="./js/delete_patient.js"></script>
     
     <div id="buttons">
         <div id = "add-new-button">
