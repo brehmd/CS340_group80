@@ -2,7 +2,7 @@
     <input type="hidden" id="patient_id" name="patient_id" value="{{data.patient_id}}">
 
     <div id="text-info">
-        Include all relevant information to update a Patient entry. * are required, all else can be set to NULL with no entry upon confirmation.
+        Include all relevant information to update a Patient entry. If an input field is left blank, it defaults to the current value listed above the input. * are required, all else can be set to NULL with "NULL".
     </div>
 
     <div id="input-table">
@@ -16,11 +16,11 @@
             </tr>
 
             <tr>
-                <td>{{data.first_name}}</td>
-                <td>{{data.last_name}}</td>
-                <td>{{data.age}}</td>
-                <td>{{data.phone_number}}</td>
-                <td>{{data.esi_level}}</td>
+                <td id="prev_fname" value="{{data.first_name}}">{{data.first_name}}</td>
+                <td id="prev_lname" value="{{data.last_name}}">{{data.last_name}}</td>
+                <td id="prev_age" value="{{data.age}}">{{data.age}}</td>
+                <td id="prev_pn" value="{{data.phone_number}}">{{data.phone_number}}</td>
+                <td id="prev_esi" value="{{data.esi_level}}">{{data.esi_level}}</td>
             </tr>
 
             <tr id="Patients-input">

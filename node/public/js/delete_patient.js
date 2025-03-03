@@ -23,6 +23,8 @@ function deletePatient(patient_id) {
     }
     // Send the request and wait for the response
     xhttp.send(JSON.stringify(data));
+
+    location.reload();
 }
 
 function deleteRow(patient_id){

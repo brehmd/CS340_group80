@@ -22,6 +22,13 @@ addPatientButton.addEventListener("click", function (e) {
     let phoneNumberValue = inputPhoneNumber.value;
     let esiLevelValue = inputEsiLevel.value;
 
+    const phone_pattern = /^\d{3}-\d{4}$/;
+
+    if (!phone_pattern.test(phoneNumberValue)) {
+        alert('Please enter a valid phone number in the format 000-0000.');
+        return; // Stop further execution if the phone number is invalid
+    }
+
     if (!firstNameValue || !lastNameValue || !ageValue || !phoneNumberValue || !esiLevelValue) {
         // Display an error message
         alert('All fields are required. Please fill in all the fields before submitting.');

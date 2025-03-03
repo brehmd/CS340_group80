@@ -7,8 +7,37 @@ document.getElementById('confirm-button').addEventListener('click', function() {
     let phone_number = document.getElementById('phone_number').value;
     let esi_level = document.getElementById('esi_level').value;
 
+    // Get the previous values from the row above
+    let prev_first_name = document.getElementById('prev_fname').textContent;
+    let prev_last_name = document.getElementById('prev_lname').textContent;
+    let prev_age = document.getElementById('prev_age').textContent;
+    let prev_phone_number = document.getElementById('prev_pn').textContent;
+    let prev_esi_level = document.getElementById('prev_esi').textContent;
 
-    if (!first_name || !last_name || !age || !phone_number || !esi_level) {
+    // Use previous values if the input fields are empty
+    if (!first_name) {
+        first_name = prev_first_name;
+    }
+    if (!last_name) {
+        last_name = prev_last_name;
+    }
+    if (!age) {
+        age = prev_age;
+    }
+    if (!phone_number) {
+        phone_number = prev_phone_number;
+    }
+    if (!esi_level) {
+        esi_level = prev_esi_level;
+    }
+
+    const phone_pattern = /^\d{3}-\d{4}$/;
+    if (!phone_pattern.test(phone_number)) {
+        alert('Please enter a valid phone number in the format 000-0000.');
+        return; // Stop further execution if the phone number is invalid
+    }
+
+    if (first_name == "NULL" || last_name == "NULL" || age == "NULL" || phone_number == "NULL" || esi_level == "NULL") {
         // Display an error message
         alert('All fields are required. Please fill in all the fields before submitting.');
         return; // Stop the function execution if any field is empty
