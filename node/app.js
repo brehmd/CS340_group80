@@ -195,6 +195,18 @@ app.get('/add_treatments.hbs', function(req, res)
         res.render('add_treatments', {is_treatments: true});
     });
 
+app.get('/update_treatments.hbs', function(req, res)        
+    {
+        let treatment_id = parseInt(req.query.treatment_id);
+        query1 = `SELECT * FROM Treatments WHERE treatment_id = ?`
+        db.pool.query(query1, [treatment_id], function(error, rows, fields){
+
+            // console.log(rows[0])
+            res.render('update_treatments', {is_treatments: true, data: rows[0]});                
+        })
+        
+    });
+
 
 app.post('/add_treatments-ajax', function(req, res) 
     {
@@ -234,6 +246,24 @@ app.post('/add_treatments-ajax', function(req, res)
             }
         })
     });
+
+app.put('/put-treatment-ajax', function(req, res, next) {
+        let data = req.body;
+        let treatment_id = parseInt(data.treatment_id);
+        let cost = parseFloat(data.cost);
+    
+        let query1 = `UPDATE Treatments SET description = ?, cost = ? WHERE treatment_id = ?`
+        // Run the query
+        db.pool.query(query1, [data.description, cost, treatment_id], function(error, rows, fields) {
+            if (error) {
+                console.log(error);
+                res.sendStatus(400);
+            } else {
+                res.sendStatus(204);
+            }
+        });
+    });
+
 
 app.delete('/delete-treatments-ajax/', function(req,res,next){
         let data = req.body;
