@@ -1,0 +1,51 @@
+<div id = content>
+
+    <form id = search-bar method="GET" action="/treatments.hbs">
+        <select name = "filter_attributes" id = "filter_attributes">
+            <option value="description">Description</option>
+            <option value="min_cost">Minimum Cost</option>
+            <option value="max_cost">Maximum Cost</option>
+        </select>
+        <input type="text" name=search_entry id = search_entry>
+        <input type="submit">
+        <a href="/treatments.hbs"><button type="button">Reset</button></a>
+    </div>
+
+    <div id = display-table>
+        <table>
+            <tr class = attribute-titles>
+                <th width="5%">ID</th>
+                <th width="40%">Description</th>
+                <th width="35%">Cost</th>
+                <th width="10%"></th>
+                <th width="10%"></th>
+            </tr>
+
+            {{#each data}}
+
+            <tr data-value="{{this.patient_id}}" class = "Treatments-info">
+                <th id ="treatment_id">{{this.treatment_id}}</th>
+                <td>{{this.description}}</td>
+                <td>{{this.cost}}</td>
+                <th>
+                    <form id = update-treatment method="GET" action="/update_treatments.hbs">
+                        <input type="hidden" name="treatment_id" value="{{this.treatment_id}}">
+                        <input type="submit" value="Update">
+                    </form>
+                </th>
+                <th>
+                    <button onclick="deleteTreatment({{this.treatment_id}})">Delete</button>
+                </th>
+            </tr>
+            {{/each}}
+
+        </table>
+    </div>
+
+    <script src="./js/delete_treatment.js"></script>
+    
+    <div id="buttons">
+        <a href = "/add_treatments.hbs"><button type="button" id = "add-new-button">Add Treatments</button></a>
+    </div>
+
+</div>

@@ -26,7 +26,8 @@ app.get('/', function(req, res)
     {
         res.render('index', {is_patients: false});      
     });
-    
+
+// PATIENTS ---------------------------------------------------------------------------------------------------------------------------------------------
 app.get('/patients.hbs', function(req, res)        
     {
         let query1;
@@ -158,6 +159,36 @@ app.delete('/delete-patients-ajax/', function(req,res,next){
                   })
               }
 })});
+
+
+// TREATMENTS ---------------------------------------------------------------------------------------------------------------------------------------------
+app.get('/treatments.hbs', function(req, res)        
+    {
+        let query1;
+        if (req.query.search_entry === undefined){
+            query1 = "SELECT * FROM Treatments;";
+        }
+        
+        else{
+            if (req.query.filter_attributes == "description"){
+                query1 = `SELECT * FROM Treatments WHERE ${req.query.filter_attributes} LIKE "${req.query.search_entry}%"`
+            }
+            if (req.query.filter_attributes == "min_cost"){
+                query1 = `SELECT * FROM Treatments WHERE cost >= "${req.query.search_entry}%"`
+            }
+            if (req.query.filter_attributes == "max_cost"){
+                query1 = `SELECT * FROM Treatments WHERE cost <= "${req.query.search_entry}%"`
+            }
+        }
+
+        db.pool.query(query1, function(error, rows, fields){
+
+            let treatments = rows;
+
+            res.render('treatments', {is_treatments: true, data: treatments});               
+        })
+             
+    });
 
 /*
     LISTENER
