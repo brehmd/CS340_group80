@@ -26,7 +26,7 @@
             <tr data-value="{{this.patient_id}}" class = "Treatments-info">
                 <th id ="treatment_id">{{this.treatment_id}}</th>
                 <td>{{this.description}}</td>
-                <td>{{this.cost}}</td>
+                <td>${{this.cost}}</td>
                 <th>
                     <form id = update-treatment method="GET" action="/update_treatments.hbs">
                         <input type="hidden" name="treatment_id" value="{{this.treatment_id}}">
