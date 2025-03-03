@@ -235,7 +235,36 @@ app.post('/add_treatments-ajax', function(req, res)
         })
     });
 
-
+app.delete('/delete-treatments-ajax/', function(req,res,next){
+        let data = req.body;
+        let treatment_id = parseInt(data.id);
+        let delete_patients_treatments = `DELETE FROM Patients_Treatments WHERE treatment_id = ?`;
+        let delete_treatments= `DELETE FROM Treatments WHERE treatment_id = ?`;
+      
+      
+              // Run the 1st query
+              db.pool.query(delete_patients_treatments, [treatment_id], function(error, rows, fields){
+                  if (error) {
+      
+                  // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                  console.log(error);
+                  res.sendStatus(400);
+                  }
+      
+                  else
+                  {
+                      // Run the second query
+                      db.pool.query(delete_treatments, [treatment_id], function(error, rows, fields) {
+      
+                          if (error) {
+                              console.log(error);
+                              res.sendStatus(400);
+                          } else {
+                              res.sendStatus(204);
+                          }
+                      })
+                  }
+    })});
 /*
     LISTENER
 */
