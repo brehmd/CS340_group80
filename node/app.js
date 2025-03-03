@@ -8,7 +8,7 @@ var app     = express();           // We need to instantiate an express object t
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static('public'))
-PORT        = 5555;                 // Set a port number at the top so it's easy to change in the future
+PORT        = 5577;                 // Set a port number at the top so it's easy to change in the future
 // Database
 var db = require('./database/db-connector')
 // handlebars
@@ -163,5 +163,5 @@ app.delete('/delete-patients-ajax/', function(req,res,next){
     LISTENER
 */
 app.listen(PORT, function(){            // This is the basic syntax for what is called the 'listener' which receives incoming requests on the specified PORT.
-    console.log('Express started on http://localhost:' + PORT + '; press Ctrl-C to terminate.')
+    console.log('Express started on http://classwork.engr.oregonstate.edu:' + PORT + '; press Ctrl-C to terminate.')
 });
