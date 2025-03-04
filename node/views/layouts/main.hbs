@@ -17,6 +17,9 @@
       {{#if is_treatments}}
       <h1 class="site-title"><a href="/treatments.hbs">/ Treatments</a></h1>
       {{/if}}
+      {{#if is_patients_treatments}}
+      <h1 class="site-title"><a href="/patients_treatments.hbs">/ Patients_Treatments</a></h1>
+      {{/if}}
     </header>
 
     <main>
@@ -44,7 +47,7 @@
             </div>
 
             <div class = "menu-item {{#if is_patients_treatments}}selected{{/if}}">
-                <a href = "./patient_treatments.hbs">Patients_Treatments</a>
+                <a href = "./patients_treatments.hbs">Patients_Treatments</a>
             </div>
 
             <div class = "menu-item {{#if is_doctors_departments}}selected{{/if}}">

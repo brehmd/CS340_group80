@@ -8,7 +8,7 @@ var app     = express();           // We need to instantiate an express object t
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static('public'))
-PORT        = 5576;                 // Set a port number at the top so it's easy to change in the future
+PORT        = 5590;                 // Set a port number at the top so it's easy to change in the future
 // Database
 var db = require('./database/db-connector')
 // handlebars
@@ -295,6 +295,81 @@ app.delete('/delete-treatments-ajax/', function(req,res,next){
                       })
                   }
     })});
+
+// PATIENTS_TREATMENTS -----------------------------------------------------------------------------------------------------------------------------------------------------------
+app.get('/patients_treatments.hbs', function(req, res) {
+    let query1;
+    let queryParams = []; // Array to hold query parameters
+
+    if (req.query.search_entry === undefined || req.query.search_entry === "") {
+        // Default query to show all rows (no search entry provided)
+        query1 = `
+            SELECT 
+                Patients_Treatments.patient_treatment_id,
+                Patients.first_name AS patient_first_name,
+                Patients.last_name AS patient_last_name,
+                Treatments.description AS treatment_description
+            FROM 
+                Patients_Treatments
+            LEFT JOIN 
+                Patients ON Patients_Treatments.patient_id = Patients.patient_id
+            LEFT JOIN 
+                Treatments ON Patients_Treatments.treatment_id = Treatments.treatment_id;
+        `;
+    } else {
+        // Filter based on the selected attribute
+        let filterAttribute = req.query.filter_attributes;
+        let searchEntry = req.query.search_entry;
+
+        if (filterAttribute === "p_name") {
+            // Filter by patient's full name
+            query1 = `
+                SELECT 
+                    Patients_Treatments.patient_treatment_id,
+                    Patients.first_name AS patient_first_name,
+                    Patients.last_name AS patient_last_name,
+                    Treatments.description AS treatment_description
+                FROM 
+                    Patients_Treatments
+                LEFT JOIN 
+                    Patients ON Patients_Treatments.patient_id = Patients.patient_id
+                LEFT JOIN 
+                    Treatments ON Patients_Treatments.treatment_id = Treatments.treatment_id
+                WHERE 
+                    CONCAT(Patients.first_name, ' ', Patients.last_name) LIKE ?;
+            `;
+            queryParams.push(`%${searchEntry}%`); // Add wildcards for partial matching
+        } else if (filterAttribute === "t_desc") {
+            // Filter by treatment description
+            query1 = `
+                SELECT 
+                    Patients_Treatments.patient_treatment_id,
+                    Patients.first_name AS patient_first_name,
+                    Patients.last_name AS patient_last_name,
+                    Treatments.description AS treatment_description
+                FROM 
+                    Patients_Treatments
+                LEFT JOIN 
+                    Patients ON Patients_Treatments.patient_id = Patients.patient_id
+                LEFT JOIN 
+                    Treatments ON Patients_Treatments.treatment_id = Treatments.treatment_id
+                WHERE 
+                    Treatments.description LIKE ?;
+            `;
+            queryParams.push(`%${searchEntry}%`); // Add wildcards for partial matching
+        }
+    }
+
+    // Execute the query
+    db.pool.query(query1, queryParams, function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.render('patients_treatments', { data: rows });
+        }
+    });
+});
 /*
     LISTENER
 */
