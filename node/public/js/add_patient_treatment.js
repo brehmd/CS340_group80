@@ -12,7 +12,7 @@ addPatientTreatmentButton.addEventListener("click", function (e) {
     let patientValue = inputPatientID.value;
     let treatmentValue = inputTreatmentID.value;
 
-    if (!treatmentValue) {
+    if (treatmentValue == "none") {
         alert('Treatment Description required. Please fill in this field before submitting.');
         return;
     }

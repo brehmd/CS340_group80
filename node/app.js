@@ -398,6 +398,68 @@ app.get('/add_patients_treatments.hbs', function(req, res){
     });
 });
 
+app.get('/update_patients_treatments.hbs', function(req, res) {
+    let patient_treatment_id = parseInt(req.query.patient_treatment_id);
+
+    // Query to get the current Patients_Treatments entry
+    let query1 = `
+        SELECT 
+            Patients_Treatments.patient_treatment_id,
+            Patients_Treatments.patient_id,
+            Patients_Treatments.treatment_id,
+            Patients.first_name AS patient_first_name,
+            Patients.last_name AS patient_last_name,
+            Treatments.description AS treatment_description
+        FROM 
+            Patients_Treatments
+        LEFT JOIN 
+            Patients ON Patients_Treatments.patient_id = Patients.patient_id
+        LEFT JOIN 
+            Treatments ON Patients_Treatments.treatment_id = Treatments.treatment_id
+        WHERE 
+            Patients_Treatments.patient_treatment_id = ?;
+    `;
+
+    // Query to get all patients for the dropdown
+    let query2 = "SELECT * FROM Patients;";
+
+    // Query to get all treatments for the dropdown
+    let query3 = "SELECT * FROM Treatments;";
+
+    // Execute the first query to get the current Patients_Treatments entry
+    db.pool.query(query1, [patient_treatment_id], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            let currentData = rows[0]; // Get the first row (current data)
+
+            // Execute the second query to get all patients
+            db.pool.query(query2, function(error, patients, fields) {
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                } else {
+                    // Execute the third query to get all treatments
+                    db.pool.query(query3, function(error, treatments, fields) {
+                        if (error) {
+                            console.log(error);
+                            res.sendStatus(400);
+                        } else {
+                            // Render the update form with the current data, patients, and treatments
+                            res.render('update_patients_treatments', {
+                                data: currentData,
+                                patients: patients,
+                                treatments: treatments
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    });
+});
+
 app.post('/add_patients_treatments-ajax', function(req, res) {
     let data = req.body;
 
@@ -435,6 +497,35 @@ app.post('/add_patients_treatments-ajax', function(req, res) {
     });
 });
 
+app.put('/put-patient-treatment-ajax', function(req, res) {
+    let data = req.body;
+
+    // Extract the data from the request body
+    let patient_treatment_id = parseInt(data.patient_treatment_id);
+    let patient_id = data.patient_id === "NULL" ? null : parseInt(data.patient_id);
+    let treatment_id = parseInt(data.treatment_id);
+
+    // Query to update the Patients_Treatments entry
+    let query = `
+        UPDATE Patients_Treatments 
+        SET 
+            patient_id = ?, 
+            treatment_id = ?
+        WHERE 
+            patient_treatment_id = ?;
+    `;
+
+    // Execute the query
+    db.pool.query(query, [patient_id, treatment_id, patient_treatment_id], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.sendStatus(204); // Success, no content to send back
+        }
+    });
+});
+
 app.delete('/delete-patients-treatments-ajax/', function(req,res,next){
     let data = req.body;
     let patient_treatment_id = parseInt(data.id);
@@ -448,7 +539,7 @@ app.delete('/delete-patients-treatments-ajax/', function(req,res,next){
               console.log(error);
               res.sendStatus(400);
               }
-  
+
               else
               {
                 res.sendStatus(204);
