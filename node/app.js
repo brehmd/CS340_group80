@@ -227,7 +227,7 @@ app.post('/add_treatments-ajax', function(req, res)
             else
             {
                 // If there was no error, perform a SELECT * on bsg_people
-                query2 = `SELECT * FROM Treatments;`;
+                let query2 = `SELECT * FROM Treatments;`;
                 db.pool.query(query2, function(error, rows, fields){
     
                     // If there was an error on the second query, send a 400
@@ -366,10 +366,76 @@ app.get('/patients_treatments.hbs', function(req, res) {
             console.log(error);
             res.sendStatus(400);
         } else {
-            res.render('patients_treatments', { data: rows });
+            res.render('patients_treatments', {is_patients_treatments: true, data: rows });
         }
     });
 });
+
+app.get('/add_patients_treatments.hbs', function(req, res){
+    // Query to get all patients
+    let query1 = "SELECT * FROM Patients;";
+
+    // Query to get all treatments
+    let query2 = "SELECT * FROM Treatments;";
+
+    // Run the first query to get patients
+    db.pool.query(query1, function(error, patients, fields){
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            // Run the second query to get treatments
+            db.pool.query(query2, function(error, treatments, fields){
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                } else {
+                    // Render the template with patients and treatments data
+                    res.render('add_patients_treatments', { patients: patients, treatments: treatments });
+                }
+            });
+        }
+    });
+});
+
+app.post('/add_patients_treatments-ajax', function(req, res) {
+    let data = req.body;
+
+    // Handle NULL values for patient_id
+    let patient_id = data.patient_id === null ? null : parseInt(data.patient_id);
+    let treatment_id = parseInt(data.treatment_id);
+
+    // Create the query and run it on the database
+    let query1 = `INSERT INTO Patients_Treatments (patient_id, treatment_id) VALUES (?, ?)`;
+    db.pool.query(query1, [patient_id, treatment_id], function(error, rows, fields) {
+        if (error) {
+            console.log("Database error:", error); // Debugging: Log database errors
+            res.sendStatus(400);
+        } 
+        else
+        {
+            // If there was no error, perform a SELECT * on bsg_people
+            let query2 = `SELECT * FROM Patients_Treatments;`;
+            db.pool.query(query2, function(error, rows, fields){
+
+                // If there was an error on the second query, send a 400
+                if (error) {
+                    
+                    // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                // If all went well, send the results of the query back.
+                else
+                {
+                    res.send(rows);
+                }
+            })
+        }
+    });
+});
+
+
 /*
     LISTENER
 */
