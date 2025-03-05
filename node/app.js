@@ -294,7 +294,30 @@ app.delete('/delete-treatments-ajax/', function(req,res,next){
                           }
                       })
                   }
-    })});
+})});
+
+// DOCTORS ---------------------------------------------------------------------------------------------------------------------------------------------
+app.get('/doctors.hbs', function(req, res)        
+    {
+        let query1;
+        if (req.query.search_entry === undefined){
+            query1 = "SELECT * FROM Doctors;";
+        }
+        
+        else{
+            query1 = `SELECT * FROM Doctors WHERE ${req.query.filter_attributes} LIKE "${req.query.search_entry}%"`
+        }
+
+        db.pool.query(query1, function(error, rows, fields){
+
+            let doctors = rows;
+
+            res.render('doctors', {is_doctors: true, data: doctors});               
+        })
+             
+    });
+
+
 
 // PATIENTS_TREATMENTS -----------------------------------------------------------------------------------------------------------------------------------------------------------
 app.get('/patients_treatments.hbs', function(req, res) {

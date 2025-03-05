@@ -1,0 +1,53 @@
+<div id = content>
+
+    <form id = search-bar method="GET" action="/doctors.hbs">
+        <select name = "filter_attributes" id = "filter_attributes">
+            <option value="first_name">First Name</option>
+            <option value="last_name">Last Name</option>
+            <option value="specialization">Specialization</option>
+        </select>
+        <input type="text" name=search_entry id = search_entry>
+        <input type="submit">
+        <a href="/doctors.hbs"><button type="button">Reset</button></a>
+    </form>
+
+    <div id = display-table>
+        <table>
+            <tr class = attribute-titles>
+                <th width="5%">ID</th>
+                <th width="20%">First Name</th>
+                <th width="20%">Last Name</th>
+                <th width="35%">Specialization</th>
+                <th width="10%"></th>
+                <th width="10%"></th>
+            </tr>
+            
+            {{#each data}}
+            <tr data-value="{{this.doctor_id}}" class = "Doctors-info">
+                <th id="doctor_id">{{this.doctor_id}}</th>
+                <td>{{this.first_name}}</td>
+                <td>{{this.last_name}}</td>
+                <td>{{this.specialization}}</td>
+                <th>
+                    <form id = update-patient method="GET" action="/update_doctors.hbs">
+                        <input type="hidden" name="doctor_id" value="{{this.doctor_id}}">
+                        <input type="submit" value="Update">
+                    </form>
+                </th>
+                <th>
+                    <button onclick="deleteDoctor({{this.doctor_id}})">Delete</button>
+                </th>
+            </tr>
+            {{/each}}
+
+        </table>
+    </div>
+    
+    <script src="./js/delete_doctor.js"></script>
+    
+    <div id="buttons">
+        <a href = "/add_doctors.hbs"><button type="button" id = "add-new-button">Add Doctors</button></a>
+    </div>
+    
+
+</div>

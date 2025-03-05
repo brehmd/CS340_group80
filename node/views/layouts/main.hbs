@@ -14,8 +14,14 @@
       {{#if is_patients}}
       <h1 class="site-title"><a href="/patients.hbs">/ Patients</a></h1>
       {{/if}}
+      {{#if is_doctors}}
+      <h1 class="site-title"><a href="/doctors.hbs">/ Doctors</a></h1>
+      {{/if}}
       {{#if is_treatments}}
       <h1 class="site-title"><a href="/treatments.hbs">/ Treatments</a></h1>
+      {{/if}}
+      {{#if is_departments}}
+      <h1 class="site-title"><a href="/departments.hbs">/ Departments</a></h1>
       {{/if}}
       {{#if is_patients_treatments}}
       <h1 class="site-title"><a href="/patients_treatments.hbs">/ Patients_Treatments</a></h1>
