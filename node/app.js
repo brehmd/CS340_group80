@@ -317,7 +317,49 @@ app.get('/doctors.hbs', function(req, res)
              
     });
 
+app.get('/add_doctors.hbs', function(req, res)        
+    {
+        res.render('add_doctors', {is_doctors: true}); 
+    });
 
+app.post('/add_doctors-ajax', function(req, res) 
+    {
+        // Capture the incoming data and parse it back to a JS object
+        let data = req.body;
+    
+        // Create the query and run it on the database
+        query1 = `INSERT INTO Doctors (first_name, last_name, specialization) VALUES ('${data.first_name}', '${data.last_name}', '${data.specialization}')`;
+        db.pool.query(query1, function(error, rows, fields){
+    
+            // Check to see if there was an error
+            if (error) {
+    
+                // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                console.log(error)
+                res.sendStatus(400);
+            }
+            else
+            {
+                // If there was no error, perform a SELECT * on bsg_people
+                query2 = `SELECT * FROM Doctors;`;
+                db.pool.query(query2, function(error, rows, fields){
+    
+                    // If there was an error on the second query, send a 400
+                    if (error) {
+                        
+                        // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                        console.log(error);
+                        res.sendStatus(400);
+                    }
+                    // If all went well, send the results of the query back.
+                    else
+                    {
+                        res.send(rows);
+                    }
+                })
+            }
+        })
+    });
 
 // PATIENTS_TREATMENTS -----------------------------------------------------------------------------------------------------------------------------------------------------------
 app.get('/patients_treatments.hbs', function(req, res) {
