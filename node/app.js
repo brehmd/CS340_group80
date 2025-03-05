@@ -361,6 +361,37 @@ app.post('/add_doctors-ajax', function(req, res)
         })
     });
 
+app.delete('/delete-doctors-ajax/', function(req,res,next){
+    let data = req.body;
+    let doctor_id = parseInt(data.id);
+    let delete_doctors_departments = `DELETE FROM Doctors_Departments WHERE doctor_id = ?`;
+    let delete_doctors= `DELETE FROM Doctors WHERE doctor_id = ?`;
+    
+    
+    // Run the 1st query
+    db.pool.query(delete_doctors_departments, [doctor_id], function(error, rows, fields){
+        if (error) {
+
+        // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+        console.log(error);
+        res.sendStatus(400);
+        }
+
+        else
+        {
+            // Run the second query
+            db.pool.query(delete_doctors, [doctor_id], function(error, rows, fields) {
+
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                } else {
+                    res.sendStatus(204);
+                }
+            })
+        }
+})});
+
 // PATIENTS_TREATMENTS -----------------------------------------------------------------------------------------------------------------------------------------------------------
 app.get('/patients_treatments.hbs', function(req, res) {
     let query1;
