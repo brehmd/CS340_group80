@@ -1,0 +1,36 @@
+<div id = content>
+
+    <input type="hidden" id="department_id" name="department_id" value="{{data.department_id}}">
+
+    <div id = text-info>
+        Include all relevant information to update a Department entry. If an input field is left blank, it defaults to the current value listed above the input. * are required, all else can be set to NULL with "NULL".
+    </div>
+
+    <div id = input-table>
+        <table>
+            <tr class = attribute-titles>
+                <th width="50%">*Name</th>
+                <th width="50%">*Location</th>
+            </tr>
+
+            <tr>
+                <td id="prev_name" value="{{data.name}}">{{data.name}}</td>
+                <td id="prev_loc" value="{{data.location}}">{{data.location}}</td>
+            </tr>
+
+            <tr class = "Departments-info">
+                <td><input type="text" name = "name" id = name class="input-attribute"></td>
+                <td><input type="text" name="location" id = location class="input-attribute"></td>
+            </tr>
+
+        </table>
+    </div>
+    
+    <div id="buttons">
+        <button id="cancel-button" type="button">CANCEL</button>
+        <button id="confirm-button" type="button">CONFIRM</button>
+    </div>
+
+</div>
+
+<script src="./js/update_department.js"></script>

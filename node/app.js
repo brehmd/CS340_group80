@@ -129,36 +129,49 @@ app.put('/put-patient-ajax', function(req, res, next) {
     });
 });
 
-app.delete('/delete-patients-ajax/', function(req,res,next){
+app.delete('/delete-patients-ajax/', function(req, res, next) {
     let data = req.body;
     let patient_id = parseInt(data.id);
-    // set appointments patient_id to null
+
+    // Query to set patient_id to NULL in Appointments table
+    let update_appointments = `UPDATE Appointments SET patient_id = NULL WHERE patient_id = ?`;
+
+    // Query to delete from Patients_Treatments table
     let delete_patients_treatments = `DELETE FROM Patients_Treatments WHERE patient_id = ?`;
-    let delete_patients= `DELETE FROM Patients WHERE patient_id = ?`;
-  
-          // Run the 1st query
-          db.pool.query(delete_patients_treatments, [patient_id], function(error, rows, fields){
-              if (error) {
-  
-              // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
-              console.log(error);
-              res.sendStatus(400);
-              }
-  
-              else
-              {
-                  // Run the second query
-                  db.pool.query(delete_patients, [patient_id], function(error, rows, fields) {
-  
-                      if (error) {
-                          console.log(error);
-                          res.sendStatus(400);
-                      } else {
-                          res.sendStatus(204);
-                      }
-                  })
-              }
-})});
+
+    // Query to delete from Patients table
+    let delete_patients = `DELETE FROM Patients WHERE patient_id = ?`;
+
+    // Run the 1st query to update Appointments table
+    db.pool.query(update_appointments, [patient_id], function(error, rows, fields) {
+        if (error) {
+            // Log the error and send a 400 response
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            // Run the 2nd query to delete from Patients_Treatments table
+            db.pool.query(delete_patients_treatments, [patient_id], function(error, rows, fields) {
+                if (error) {
+                    // Log the error and send a 400 response
+                    console.log(error);
+                    res.sendStatus(400);
+                } else {
+                    // Run the 3rd query to delete from Patients table
+                    db.pool.query(delete_patients, [patient_id], function(error, rows, fields) {
+                        if (error) {
+                            // Log the error and send a 400 response
+                            console.log(error);
+                            res.sendStatus(400);
+                        } else {
+                            // If everything is successful, send a 204 response
+                            res.sendStatus(204);
+                        }
+                    });
+                }
+            });
+        }
+    });
+});
 
 
 // TREATMENTS ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -390,36 +403,188 @@ app.put('/put-doctor-ajax', function(req, res, next) {
         });
     });
 
-app.delete('/delete-doctors-ajax/', function(req,res,next){
+app.delete('/delete-doctors-ajax/', function(req, res, next) {
     let data = req.body;
     let doctor_id = parseInt(data.id);
+
+    // Query to set doctor_id to NULL in Appointments table
+    let update_appointments = `UPDATE Appointments SET doctor_id = NULL WHERE doctor_id = ?`;
+
+    // Query to delete from Doctors_Departments table
     let delete_doctors_departments = `DELETE FROM Doctors_Departments WHERE doctor_id = ?`;
-    let delete_doctors= `DELETE FROM Doctors WHERE doctor_id = ?`;
-    // set appointments doctor_id to null
-    
-    // Run the 1st query
-    db.pool.query(delete_doctors_departments, [doctor_id], function(error, rows, fields){
+
+    // Query to delete from Doctors table
+    let delete_doctors = `DELETE FROM Doctors WHERE doctor_id = ?`;
+
+    // Run the 1st query to update Appointments table
+    db.pool.query(update_appointments, [doctor_id], function(error, rows, fields) {
         if (error) {
-
-        // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
-        console.log(error);
-        res.sendStatus(400);
-        }
-
-        else
-        {
-            // Run the second query
-            db.pool.query(delete_doctors, [doctor_id], function(error, rows, fields) {
-
+            // Log the error and send a 400 response
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            // Run the 2nd query to delete from Doctors_Departments table
+            db.pool.query(delete_doctors_departments, [doctor_id], function(error, rows, fields) {
                 if (error) {
+                    // Log the error and send a 400 response
                     console.log(error);
                     res.sendStatus(400);
                 } else {
-                    res.sendStatus(204);
+                    // Run the 3rd query to delete from Doctors table
+                    db.pool.query(delete_doctors, [doctor_id], function(error, rows, fields) {
+                        if (error) {
+                            // Log the error and send a 400 response
+                            console.log(error);
+                            res.sendStatus(400);
+                        } else {
+                            // If everything is successful, send a 204 response
+                            res.sendStatus(204);
+                        }
+                    });
                 }
-            })
+            });
         }
-})});
+    });
+});
+
+
+// Departments ---------------------------------------------------------------------------------------------------------------------------------------------
+app.get('/departments.hbs', function(req, res)        
+    {
+        let query1;
+        if (req.query.search_entry === undefined){
+            query1 = "SELECT * FROM Departments;";
+        }
+        
+        else{
+            query1 = `SELECT * FROM Departments WHERE ${req.query.filter_attributes} LIKE "${req.query.search_entry}%"`
+        }
+
+        db.pool.query(query1, function(error, rows, fields){
+
+            let departments = rows;
+
+            res.render('departments', {is_departments: true, data: departments});               
+        })
+             
+    });
+
+app.get('/add_departments.hbs', function(req, res)        
+    {
+        res.render('add_departments', {is_departments: true}); 
+    });
+
+app.get('/update_departments.hbs', function(req, res)        
+    {
+        let department_id = parseInt(req.query.department_id);
+        query1 = `SELECT * FROM Departments WHERE department_id = ?`
+        db.pool.query(query1, [department_id], function(error, rows, fields){
+
+            // console.log(rows[0])
+            res.render('update_departments', {is_departments: true, data: rows[0]});                
+        })
+        
+    });
+
+app.post('/add_departments-ajax', function(req, res) 
+    {
+        // Capture the incoming data and parse it back to a JS object
+        let data = req.body;
+    
+        // Create the query and run it on the database
+        query1 = `INSERT INTO Departments (name, location) VALUES ('${data.name}', '${data.location}')`;
+        db.pool.query(query1, function(error, rows, fields){
+    
+            // Check to see if there was an error
+            if (error) {
+    
+                // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                console.log(error)
+                res.sendStatus(400);
+            }
+            else
+            {
+                // If there was no error, perform a SELECT * on bsg_people
+                query2 = `SELECT * FROM Departments;`;
+                db.pool.query(query2, function(error, rows, fields){
+    
+                    // If there was an error on the second query, send a 400
+                    if (error) {
+                        
+                        // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                        console.log(error);
+                        res.sendStatus(400);
+                    }
+                    // If all went well, send the results of the query back.
+                    else
+                    {
+                        res.send(rows);
+                    }
+                })
+            }
+        })
+    });
+
+app.put('/put-department-ajax', function(req, res, next) {
+        let data = req.body;
+        let department_id = parseInt(data.department_id);
+    
+        let query1 = `UPDATE Departments SET name = ?, location = ? WHERE department_id = ?`;
+    
+        // Run the query
+        db.pool.query(query1, [data.name, data.location, department_id], function(error, rows, fields) {
+            if (error) {
+                console.log(error);
+                res.sendStatus(400);
+            } else {
+                res.sendStatus(204);
+            }
+        });
+    });
+
+app.delete('/delete-departments-ajax/', function(req, res, next) {
+    let data = req.body;
+    let department_id = parseInt(data.id);
+
+    // Query to set doctor_id to NULL in Appointments table
+    let delete_appointments = `DELETE FROM Appointments WHERE department_id = ?`;
+
+    // Query to delete from Doctors_Departments table
+    let delete_doctors_departments = `DELETE FROM Doctors_Departments WHERE department_id = ?`;
+
+    // Query to delete from Doctors table
+    let delete_departments = `DELETE FROM Departments WHERE department_id = ?`;
+
+    // Run the 1st query to update Appointments table
+    db.pool.query(delete_appointments, [department_id], function(error, rows, fields) {
+        if (error) {
+            // Log the error and send a 400 response
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            // Run the 2nd query to delete from Doctors_Departments table
+            db.pool.query(delete_doctors_departments, [department_id], function(error, rows, fields) {
+                if (error) {
+                    // Log the error and send a 400 response
+                    console.log(error);
+                    res.sendStatus(400);
+                } else {
+                    // Run the 3rd query to delete from Doctors table
+                    db.pool.query(delete_departments, [department_id], function(error, rows, fields) {
+                        if (error) {
+                            // Log the error and send a 400 response
+                            console.log(error);
+                            res.sendStatus(400);
+                        } else {
+                            // If everything is successful, send a 204 response
+                            res.sendStatus(204);
+                        }
+                    });
+                }
+            });
+        }
+    });
+});
 
 // PATIENTS_TREATMENTS -----------------------------------------------------------------------------------------------------------------------------------------------------------
 app.get('/patients_treatments.hbs', function(req, res) {

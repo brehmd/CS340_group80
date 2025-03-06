@@ -1,0 +1,50 @@
+<div id = content>
+
+    <form id = search-bar method="GET" action="/departments.hbs">
+        <select name = "filter_attributes" id = "filter_attributes">
+            <option value="name">Name</option>
+            <option value="location">Location</option>
+        </select>
+        <input type="text" name=search_entry id = search_entry>
+        <input type="submit">
+        <a href="/departments.hbs"><button type="button">Reset</button></a>
+    </div>
+
+    <div id = display-table>
+        <table>
+            <tr class = attribute-titles>
+                <th width="5%">ID</th>
+                <th width="35%">Name</th>
+                <th width="40%">Location</th>
+                <th width="10%"></th>
+                <th width="10%"></th>
+            </tr>
+
+            {{#each data}}
+            <tr data-value="{{this.department_id}}" class = "Departments-info">
+                <th id="department_id">{{this.department_id}}</th>
+                <td>{{this.name}}</td>
+                <td>{{this.location}}</td>
+                <th>
+                    <form id="update-department" method="GET" action="/update_departments.hbs">
+                        <input type="hidden" name="department_id" value="{{this.department_id}}">
+                        <input type="submit" value="Update">
+                    </form>
+                </th>
+                <th>
+                    <button onclick="deleteDepartment({{this.department_id}})">Delete</button>
+                </th>
+            </tr>
+            {{/each}}
+
+        </table>
+    </div>
+    
+    <script src="./js/delete_department.js"></script>
+    
+    <div id="buttons">
+        <a href = "/add_departments.hbs"><button type="button" id = "add-new-button">Add Department</button></a>
+    </div>
+    
+
+</div>
