@@ -132,9 +132,9 @@ app.put('/put-patient-ajax', function(req, res, next) {
 app.delete('/delete-patients-ajax/', function(req,res,next){
     let data = req.body;
     let patient_id = parseInt(data.id);
+    // set appointments patient_id to null
     let delete_patients_treatments = `DELETE FROM Patients_Treatments WHERE patient_id = ?`;
     let delete_patients= `DELETE FROM Patients WHERE patient_id = ?`;
-  
   
           // Run the 1st query
           db.pool.query(delete_patients_treatments, [patient_id], function(error, rows, fields){
@@ -322,6 +322,18 @@ app.get('/add_doctors.hbs', function(req, res)
         res.render('add_doctors', {is_doctors: true}); 
     });
 
+app.get('/update_doctors.hbs', function(req, res)        
+    {
+        let doctor_id = parseInt(req.query.doctor_id);
+        query1 = `SELECT * FROM Doctors WHERE doctor_id = ?`
+        db.pool.query(query1, [doctor_id], function(error, rows, fields){
+
+            // console.log(rows[0])
+            res.render('update_doctors', {is_doctors: true, data: rows[0]});                
+        })
+        
+    });
+
 app.post('/add_doctors-ajax', function(req, res) 
     {
         // Capture the incoming data and parse it back to a JS object
@@ -361,12 +373,29 @@ app.post('/add_doctors-ajax', function(req, res)
         })
     });
 
+app.put('/put-doctor-ajax', function(req, res, next) {
+        let data = req.body;
+        let doctor_id = parseInt(data.doctor_id);
+    
+        let query1 = `UPDATE Doctors SET first_name = ?, last_name = ?, specialization = ? WHERE doctor_id = ?`;
+    
+        // Run the query
+        db.pool.query(query1, [data.first_name, data.last_name, data.specialization, doctor_id], function(error, rows, fields) {
+            if (error) {
+                console.log(error);
+                res.sendStatus(400);
+            } else {
+                res.sendStatus(204);
+            }
+        });
+    });
+
 app.delete('/delete-doctors-ajax/', function(req,res,next){
     let data = req.body;
     let doctor_id = parseInt(data.id);
     let delete_doctors_departments = `DELETE FROM Doctors_Departments WHERE doctor_id = ?`;
     let delete_doctors= `DELETE FROM Doctors WHERE doctor_id = ?`;
-    
+    // set appointments doctor_id to null
     
     // Run the 1st query
     db.pool.query(delete_doctors_departments, [doctor_id], function(error, rows, fields){
