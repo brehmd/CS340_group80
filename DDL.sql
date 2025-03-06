@@ -16,14 +16,16 @@ CREATE TABLE Patients (
     last_name VARCHAR(50) NOT NULL,
     age INT NOT NULL CHECK (age > 0), -- Ensures valid patient age
     phone_number VARCHAR(20) NOT NULL,
-    esi_level VARCHAR(50) NOT NULL -- Previously referenced ESI_Index, now stored as direct attribute
+    esi_level VARCHAR(50) NOT NULL, -- Previously referenced ESI_Index, now stored as direct attribute
+    CONSTRAINT full_name UNIQUE (first_name, last_name)
 );
 
 CREATE TABLE Doctors (
     doctor_id INT PRIMARY KEY AUTO_INCREMENT,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
-    specialization VARCHAR(100) NOT NULL
+    specialization VARCHAR(100) NOT NULL,
+    CONSTRAINT full_name UNIQUE (first_name, last_name)
 );
 
 CREATE TABLE Departments (
