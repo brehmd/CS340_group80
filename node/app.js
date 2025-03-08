@@ -738,6 +738,7 @@ app.get('/update_patients_treatments.hbs', function(req, res) {
                         } else {
                             // Render the update form with the current data, patients, and treatments
                             res.render('update_patients_treatments', {
+                                is_patients_treatments: true,
                                 data: currentData,
                                 patients: patients,
                                 treatments: treatments
@@ -938,6 +939,69 @@ app.get('/add_doctors_departments.hbs', function(req, res){
     });
 });
 
+app.get('/update_doctors_departments.hbs', function(req, res) {
+    let doctor_department_id = parseInt(req.query.doctor_department_id);
+
+    // Query to get the current Patients_Treatments entry
+    let query1 = `
+        SELECT 
+            Doctors_Departments.doctor_department_id,
+            Doctors_Departments.doctor_id,
+            Doctors_Departments.department_id,
+            Doctors.first_name AS doctor_first_name,
+            Doctors.last_name AS doctor_last_name,
+            Departments.name AS department_name
+        FROM 
+            Doctors_Departments
+        LEFT JOIN 
+            Doctors ON Doctors_Departments.doctor_id = Doctors.doctor_id
+        LEFT JOIN 
+            Departments ON Doctors_Departments.department_id = Departments.department_id
+        WHERE 
+            Doctors_Departments.doctor_department_id = ?;
+    `;
+
+    // Query to get all patients for the dropdown
+    let query2 = "SELECT * FROM Doctors;";
+
+    // Query to get all treatments for the dropdown
+    let query3 = "SELECT * FROM Departments;";
+
+    // Execute the first query to get the current Patients_Treatments entry
+    db.pool.query(query1, [doctor_department_id], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            let currentData = rows[0]; // Get the first row (current data)
+
+            // Execute the second query to get all patients
+            db.pool.query(query2, function(error, doctors, fields) {
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                } else {
+                    // Execute the third query to get all treatments
+                    db.pool.query(query3, function(error, departments, fields) {
+                        if (error) {
+                            console.log(error);
+                            res.sendStatus(400);
+                        } else {
+                            // Render the update form with the current data, patients, and treatments
+                            res.render('update_doctors_departments', {
+                                is_doctors_departments: true,
+                                data: currentData,
+                                doctors: doctors,
+                                departments: departments
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    });
+});
+
 app.post('/add_doctors_departments-ajax', function(req, res) {
     let data = req.body;
 
@@ -974,6 +1038,55 @@ app.post('/add_doctors_departments-ajax', function(req, res) {
         }
     });
 });
+
+app.put('/put-doctor-department-ajax', function(req, res) {
+    let data = req.body;
+
+    // Extract the data from the request body
+    let doctor_department_id = parseInt(data.doctor_department_id);
+    let doctor_id = parseInt(data.doctor_id);
+    let department_id = parseInt(data.department_id);
+
+    // Query to update the Patients_Treatments entry
+    let query = `
+        UPDATE Doctors_Departments 
+        SET 
+            doctor_id = ?, 
+            department_id = ?
+        WHERE 
+            doctor_department_id = ?;
+    `;
+
+    // Execute the query
+    db.pool.query(query, [doctor_id, department_id, doctor_department_id], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.sendStatus(204); // Success, no content to send back
+        }
+    });
+});
+
+app.delete('/delete-doctors-departments-ajax/', function(req,res,next){
+    let data = req.body;
+    let doctor_department_id = parseInt(data.id);
+    let delete_doctors_departments = `DELETE FROM Doctors_Departments WHERE doctor_department_id = ?`;
+  
+          // Run the 1st query
+          db.pool.query(delete_doctors_departments, [doctor_department_id], function(error, rows, fields){
+              if (error) {
+  
+              // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+              console.log(error);
+              res.sendStatus(400);
+              }
+
+              else
+              {
+                res.sendStatus(204);
+              }
+})});
 
 /*
     LISTENER
