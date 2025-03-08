@@ -1,0 +1,50 @@
+<div id = content>
+
+    <form id = search-bar method="GET" action="/doctors_departments.hbs">
+        <select name = "filter_attributes" id = "filter_attributes">
+            <option value="doctor_name">Doctor's Name</option>
+            <option value="department_name">Department Name</option>
+        </select>
+        <input type="text" name="search_entry" id="search_entry" placeholder="Search...">
+        <input type="submit" value="Search">
+        <a href="/doctors_departments.hbs"><button type="button">Reset</button></a>
+    </form>
+
+    <div id = display-table>
+        <table>
+            <tr class = attribute-titles>
+                <th width="5%">ID</th>
+                <th width="35%">Doctor Name</th>
+                <th width="40%">Department Name</th>
+                <th width="10%"></th>
+                <th width="10%"></th>
+            </tr>
+
+            {{#each data}}
+            <tr class = "Doctors_Departments-info">
+                <th>{{this.doctor_department_id}}</th>
+                <td>{{this.doctor_first_name}} {{this.doctor_last_name}}</td>
+                <td>{{this.department_name}}</td>
+                <th>
+                    <form id="update-dd" method="GET" action="/update_doctors_departments.hbs">
+                        <input type="hidden" name="doctor_department_id" value="{{this.doctor_department_id}}">
+                        <input type="submit" value="Update">
+                    </form>
+                </th>
+                <th>
+                    <button onclick="deleteDoctorDepartment({{this.doctor_department_id}})">Delete</button>
+                </th>
+            </tr>
+            {{/each}}
+
+        </table>
+    </div>
+    
+    <script src="./js/delete_doctor_department.js"></script>
+
+    <div id="buttons">
+        <a href="/add_doctors_departments.hbs"><button type="button" id="add-new-button">Add Doctors_Departments</button></a>
+    </div>
+    
+
+</div>

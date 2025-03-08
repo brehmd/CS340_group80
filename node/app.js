@@ -8,7 +8,7 @@ var app     = express();           // We need to instantiate an express object t
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static('public'))
-PORT        = 5590;                 // Set a port number at the top so it's easy to change in the future
+PORT        = 6005;                 // Set a port number at the top so it's easy to change in the future
 // Database
 var db = require('./database/db-connector')
 // handlebars
@@ -681,7 +681,7 @@ app.get('/add_patients_treatments.hbs', function(req, res){
                     res.sendStatus(400);
                 } else {
                     // Render the template with patients and treatments data
-                    res.render('add_patients_treatments', { patients: patients, treatments: treatments });
+                    res.render('add_patients_treatments', {is_patients_treatments: true, patients: patients, treatments: treatments });
                 }
             });
         }
@@ -835,6 +835,145 @@ app.delete('/delete-patients-treatments-ajax/', function(req,res,next){
                 res.sendStatus(204);
               }
 })});
+
+// DOCTORS_DEPARTMENTS ---------------------------------------------------------------------------------------------------------------
+app.get('/doctors_departments.hbs', function(req, res) {
+    let query1;
+    let queryParams = []; // Array to hold query parameters
+
+    if (req.query.search_entry === undefined || req.query.search_entry === "") {
+        // Default query to show all rows (no search entry provided)
+        query1 = `
+            SELECT 
+                Doctors_Departments.doctor_department_id,
+                Doctors.first_name AS doctor_first_name,
+                Doctors.last_name AS doctor_last_name,
+                Departments.name AS department_name
+            FROM 
+                Doctors_Departments
+            LEFT JOIN 
+                Doctors ON Doctors_Departments.doctor_id = Doctors.doctor_id
+            LEFT JOIN 
+                Departments ON Doctors_Departments.department_id = Departments.department_id;
+        `;
+    } else {
+        // Filter based on the selected attribute
+        let filterAttribute = req.query.filter_attributes;
+        let searchEntry = req.query.search_entry;
+
+        if (filterAttribute === "doctor_name") {
+            // Filter by patient's full name
+            query1 = `
+                SELECT 
+                    Doctors_Departments.doctor_department_id,
+                    Doctors.first_name AS doctor_first_name,
+                    Doctors.last_name AS doctor_last_name,
+                    Departments.name AS department_name
+                FROM 
+                    Doctors_Departments
+                LEFT JOIN 
+                    Doctors ON Doctors_Departments.doctor_id = Doctors.doctor_id
+                LEFT JOIN 
+                    Departments ON Doctors_Departments.department_id = Departments.department_id
+                WHERE 
+                    CONCAT(Doctors.first_name, ' ', Doctors.last_name) LIKE ?;
+            `;
+            queryParams.push(`%${searchEntry}%`); // Add wildcards for partial matching
+        } else if (filterAttribute === "department_name") {
+            // Filter by treatment description
+            query1 = `
+                SELECT 
+                    Doctors_Departments.doctor_department_id,
+                    Doctors.first_name AS doctor_first_name,
+                    Doctors.last_name AS doctor_last_name,
+                    Departments.name AS department_name
+                FROM 
+                    Doctors_Departments
+                LEFT JOIN 
+                    Doctors ON Doctors_Departments.doctor_id = Doctors.doctor_id
+                LEFT JOIN 
+                    Departments ON Doctors_Departments.department_id = Departments.department_id
+                WHERE 
+                    Departments.name LIKE ?;
+            `;
+            queryParams.push(`%${searchEntry}%`); // Add wildcards for partial matching
+        }
+    }
+
+    // Execute the query
+    db.pool.query(query1, queryParams, function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.render('doctors_departments', {is_doctors_departments: true, data: rows });
+        }
+    });
+});
+
+app.get('/add_doctors_departments.hbs', function(req, res){
+    // Query to get all patients
+    let query1 = "SELECT * FROM Doctors;";
+
+    // Query to get all treatments
+    let query2 = "SELECT * FROM Departments;";
+
+    // Run the first query to get patients
+    db.pool.query(query1, function(error, doctors, fields){
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            // Run the second query to get treatments
+            db.pool.query(query2, function(error, departments, fields){
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                } else {
+                    // Render the template with patients and treatments data
+                    res.render('add_doctors_departments', {is_doctors_departments: true, doctors: doctors, departments: departments });
+                }
+            });
+        }
+    });
+});
+
+app.post('/add_doctors_departments-ajax', function(req, res) {
+    let data = req.body;
+
+    // Handle NULL values for patient_id
+    let doctor_id = parseInt(data.doctor_id);
+    let department_id = parseInt(data.department_id);
+
+    // Create the query and run it on the database
+    let query1 = `INSERT INTO Doctors_Departments (doctor_id, department_id) VALUES (?, ?)`;
+    db.pool.query(query1, [doctor_id, department_id], function(error, rows, fields) {
+        if (error) {
+            console.log("Database error:", error); // Debugging: Log database errors
+            res.sendStatus(400);
+        } 
+        else
+        {
+            // If there was no error, perform a SELECT * on bsg_people
+            let query2 = `SELECT * FROM Doctors_Departments;`;
+            db.pool.query(query2, function(error, rows, fields){
+
+                // If there was an error on the second query, send a 400
+                if (error) {
+                    
+                    // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                // If all went well, send the results of the query back.
+                else
+                {
+                    res.send(rows);
+                }
+            })
+        }
+    });
+});
 
 /*
     LISTENER

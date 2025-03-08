@@ -1,0 +1,40 @@
+ <div id = content>
+
+    <div id = text-info>
+        Include all relevant information to add a new Doctors_Departments entry. * are required, all else can be set to NULL with no entry upon confirmation.
+    </div>
+
+    <div id = input-table>
+        <table>
+            <tr class = attribute-titles>
+                <th width="50%">*Doctor Name</th>
+                <th width="50%">*Department Name</th>
+            </tr>
+
+            <tr class = "Doctors_Departments-info">
+                <td><select id = doctor_name class="input-attribute">
+                    <option value = none></option>
+                    {{#each doctors}}
+                    <option value = "{{this.doctor_id}}">{{this.first_name}} {{this.last_name}}</option>
+                    {{/each}}
+                </select></td>
+                <td><select id = department_name class="input-attribute">
+                    <option value = none></option>
+                    {{#each departments}}
+                    <option value = "{{this.department_id}}">{{this.name}}</option>
+                    {{/each}}
+
+                </select></td>
+            </tr>
+
+        </table>
+    </div>
+    
+    <div id="buttons">
+        <button id="cancel-button" type="button">CANCEL</button>
+        <button id="confirm-button" type="button">CONFIRM</button>
+    </div>
+
+</div>
+
+<script src="./js/add_doctor_department.js"></script>
