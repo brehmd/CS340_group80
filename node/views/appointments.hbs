@@ -1,0 +1,43 @@
+<div id = content>
+
+    <div id = search-bar></div>
+
+    <div id = display-table>
+        <table>
+            <tr class = attribute-titles>
+                <th width="10%">ID</th>
+                <th width="10%">Patient Name</th>
+                <th width="10%">Doctor Name</th>
+                <th width="10%">Department Name</th>
+                <th width="15%">Date</th>
+                <th width="15%">Time</th>
+                <th width="20%">Reason</th>
+                <th width="10%"></th>
+            </tr>
+
+            {{#each data}}
+            <tr class = "Appointments-info">
+                <th>{{this.appointment_id}}</th>
+                <td>{{this.patient_full_name}}</td>
+                <td>{{this.doctor_full_name}}</td>
+                <td>{{this.department_name}}</td>
+                <td>{{this.appointment_date}}</td>
+                <td>{{this.appointment_time}}</td>
+                <td>{{this.reason}}</td>
+                <th>
+                    <button onclick="deleteAppointment({{this.appointment_id}})">Delete</button>
+                </th>
+            </tr>
+            {{/each}}
+
+        </table>
+    </div>
+    
+    <script src="./js/delete_appointment.js"></script>
+
+    <div id="buttons">
+        <a href="/add_appointments.hbs"><button type="button" id="add-new-button">Add Appointments</button></a>
+    </div>
+    
+
+</div>

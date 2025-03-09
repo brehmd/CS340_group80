@@ -446,9 +446,152 @@ app.delete('/delete-doctors-ajax/', function(req, res, next) {
         }
     });
 });
+// APPOINTMENTS ----------------------------------------------------------------------------------------------------------------------------
+app.get('/appointments.hbs', function(req, res) {
+    let query1 = `
+        SELECT 
+            a.appointment_id,
+            CONCAT(p.first_name, ' ', p.last_name) AS patient_full_name,
+            CONCAT(d.first_name, ' ', d.last_name) AS doctor_full_name,
+            dept.name AS department_name,
+            a.appointment_date,
+            a.appointment_time,
+            a.reason
+        FROM 
+            Appointments a
+        LEFT JOIN 
+            Patients p ON a.patient_id = p.patient_id
+        LEFT JOIN 
+            Doctors d ON a.doctor_id = d.doctor_id
+        JOIN 
+            Departments dept ON a.department_id = dept.department_id;
+    `;
 
+    // Execute the query
+    db.pool.query(query1, function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            // Format the appointment_date to only show the date portion (YYYY-MM-DD)
+            rows.forEach(row => {
+                if (row.appointment_date) {
+                    row.appointment_date = row.appointment_date.toISOString().split('T')[0];
+                }
+            });
 
-// Departments ---------------------------------------------------------------------------------------------------------------------------------------------
+            // Pass the formatted data to the template
+            res.render('appointments', {is_appointments: true, data: rows });
+        }
+    });
+});
+
+app.get('/add_appointments.hbs', function(req, res) {
+    // Query to get all patients
+    let query1 = "SELECT * FROM Patients;";
+
+    // Query to get all doctors
+    let query2 = "SELECT * FROM Doctors;";
+
+    // Query to get all departments
+    let query3 = "SELECT * FROM Departments;";
+
+    // Execute the first query to get patients
+    db.pool.query(query1, function(error, patients, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            // Execute the second query to get doctors
+            db.pool.query(query2, function(error, doctors, fields) {
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                } else {
+                    // Execute the third query to get departments
+                    db.pool.query(query3, function(error, departments, fields) {
+                        if (error) {
+                            console.log(error);
+                            res.sendStatus(400);
+                        } else {
+                            // Render the add_appointments.hbs template with patients, doctors, and departments data
+                            res.render('add_appointments', {
+                                is_appointments: true,
+                                patients: patients,
+                                doctors: doctors,
+                                departments: departments
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    });
+});
+
+app.post('/add_appointments-ajax', function(req, res) {
+    let data = req.body;
+
+    // Handle NULL values for patient_id and doctor_id
+    let patient_id = data.patient_id === null ? null : parseInt(data.patient_id);
+    let doctor_id = data.doctor_id === null ? null : parseInt(data.doctor_id);
+    let department_id = parseInt(data.department_id);
+    let appointment_date = data.appointment_date;
+    let appointment_time = data.appointment_time;
+    let reason = data.reason;
+
+    // Create the query and run it on the database
+    let query1 = `
+        INSERT INTO Appointments (patient_id, doctor_id, department_id, appointment_date, appointment_time, reason)
+        VALUES (?, ?, ?, ?, ?, ?)
+    `;
+    
+    db.pool.query(query1, [patient_id, doctor_id, department_id, appointment_date, appointment_time, reason], function(error, rows, fields) {
+        if (error) {
+            console.log("Database error:", error); // Debugging: Log database errors
+            res.sendStatus(400);
+        } 
+        else
+        {
+            // If there was no error, perform a SELECT * on Appointments to return the updated list
+            let query2 = `SELECT * FROM Appointments;`;
+
+            db.pool.query(query2, function(error, rows, fields) {
+                // If there was an error on the second query, send a 400
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                // If all went well, send the results of the query back.
+                else
+                {
+                    res.send(rows);
+                }
+            });
+        }
+    });
+});
+
+app.delete('/delete-appointments-ajax', function(req, res) {
+    let data = req.body;
+    let appointment_id = parseInt(data.id);
+
+    // Query to delete the appointment from the Appointments table
+    let deleteQuery = `DELETE FROM Appointments WHERE appointment_id = ?`;
+
+    // Execute the query
+    db.pool.query(deleteQuery, [appointment_id], function(error, rows, fields) {
+        if (error) {
+            console.log("Database error:", error); // Debugging: Log database errors
+            res.sendStatus(400); // Send a 400 error if something goes wrong
+        } else {
+            // If the deletion is successful, send a 204 status (No Content)
+            res.sendStatus(204);
+        }
+    });
+});
+
+// DEPARTMENTS ---------------------------------------------------------------------------------------------------------------------------------------------
 app.get('/departments.hbs', function(req, res)        
     {
         let query1;
