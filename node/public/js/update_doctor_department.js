@@ -40,7 +40,7 @@ document.getElementById('confirm-button').addEventListener('click', function() {
     })
     .then(response => {
         if (response.status === 204) {
-            // If the update was successful, redirect to the doctors page
+            // If the update was successful, redirect to the doctors_departments page
             window.location.href = '/doctors_departments.hbs';
         } else {
             console.error('Error updating doctor department');
@@ -52,6 +52,6 @@ document.getElementById('confirm-button').addEventListener('click', function() {
 });
 
 document.getElementById('cancel-button').addEventListener('click', function() {
-    // Redirect to the doctors page if the user cancels
+    // Redirect to the doctors_departments page if the user cancels
     window.location.href = '/doctors_departments.hbs';
 });

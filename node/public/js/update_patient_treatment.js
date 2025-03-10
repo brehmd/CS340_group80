@@ -40,7 +40,7 @@ document.getElementById('confirm-button').addEventListener('click', function() {
     })
     .then(response => {
         if (response.status === 204) {
-            // If the update was successful, redirect to the patients page
+            // If the update was successful, redirect to the patients_treaments page
             window.location.href = '/patients_treatments.hbs';
         } else {
             console.error('Error updating patient treatment');
@@ -52,6 +52,6 @@ document.getElementById('confirm-button').addEventListener('click', function() {
 });
 
 document.getElementById('cancel-button').addEventListener('click', function() {
-    // Redirect to the patients page if the user cancels
+    // Redirect to the patients_treatments page if the user cancels
     window.location.href = '/patients_treatments.hbs';
 });

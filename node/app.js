@@ -59,7 +59,6 @@ app.get('/update_patients.hbs', function(req, res)
         query1 = `SELECT * FROM Patients WHERE patient_id = ?`
         db.pool.query(query1, [patient_id], function(error, rows, fields){
 
-            // console.log(rows[0])
             res.render('update_patients', {is_patients: true, data: rows[0]});                
         })
         
@@ -69,13 +68,6 @@ app.post('/add_patients-ajax', function(req, res)
 {
     // Capture the incoming data and parse it back to a JS object
     let data = req.body;
-
-    // // Capture NULL values
-    // let esi_level = parseInt(data.esi_level);
-    // if (isNaN(esi_level))
-    // {
-    //     esi_level = 'NULL' //does this need to be NULL??
-    // }
 
     // Create the query and run it on the database
     query1 = `INSERT INTO Patients (first_name, last_name, age, phone_number, esi_level) VALUES ('${data.first_name}', '${data.last_name}', ${data.age}, '${data.phone_number}', '${data.esi_level}')`;
@@ -90,7 +82,7 @@ app.post('/add_patients-ajax', function(req, res)
         }
         else
         {
-            // If there was no error, perform a SELECT * on bsg_people
+            // If there was no error, perform a SELECT * on Patients
             query2 = `SELECT * FROM Patients;`;
             db.pool.query(query2, function(error, rows, fields){
 
@@ -214,7 +206,6 @@ app.get('/update_treatments.hbs', function(req, res)
         query1 = `SELECT * FROM Treatments WHERE treatment_id = ?`
         db.pool.query(query1, [treatment_id], function(error, rows, fields){
 
-            // console.log(rows[0])
             res.render('update_treatments', {is_treatments: true, data: rows[0]});                
         })
         
@@ -239,7 +230,7 @@ app.post('/add_treatments-ajax', function(req, res)
             }
             else
             {
-                // If there was no error, perform a SELECT * on bsg_people
+                // If there was no error, perform a SELECT * on Treatments
                 let query2 = `SELECT * FROM Treatments;`;
                 db.pool.query(query2, function(error, rows, fields){
     
@@ -341,7 +332,6 @@ app.get('/update_doctors.hbs', function(req, res)
         query1 = `SELECT * FROM Doctors WHERE doctor_id = ?`
         db.pool.query(query1, [doctor_id], function(error, rows, fields){
 
-            // console.log(rows[0])
             res.render('update_doctors', {is_doctors: true, data: rows[0]});                
         })
         
@@ -365,7 +355,7 @@ app.post('/add_doctors-ajax', function(req, res)
             }
             else
             {
-                // If there was no error, perform a SELECT * on bsg_people
+                // If there was no error, perform a SELECT * on Doctors
                 query2 = `SELECT * FROM Doctors;`;
                 db.pool.query(query2, function(error, rows, fields){
     
@@ -623,7 +613,6 @@ app.get('/update_departments.hbs', function(req, res)
         query1 = `SELECT * FROM Departments WHERE department_id = ?`
         db.pool.query(query1, [department_id], function(error, rows, fields){
 
-            // console.log(rows[0])
             res.render('update_departments', {is_departments: true, data: rows[0]});                
         })
         
@@ -689,7 +678,7 @@ app.delete('/delete-departments-ajax/', function(req, res, next) {
     let data = req.body;
     let department_id = parseInt(data.id);
 
-    // Query to set doctor_id to NULL in Appointments table
+    // Query to delete from Appointments table
     let delete_appointments = `DELETE FROM Appointments WHERE department_id = ?`;
 
     // Query to delete from Doctors_Departments table
@@ -698,7 +687,7 @@ app.delete('/delete-departments-ajax/', function(req, res, next) {
     // Query to delete from Doctors table
     let delete_departments = `DELETE FROM Departments WHERE department_id = ?`;
 
-    // Run the 1st query to update Appointments table
+    // Run the 1st query to delete Appointments table
     db.pool.query(delete_appointments, [department_id], function(error, rows, fields) {
         if (error) {
             // Log the error and send a 400 response
@@ -1006,7 +995,7 @@ app.get('/doctors_departments.hbs', function(req, res) {
         let searchEntry = req.query.search_entry;
 
         if (filterAttribute === "doctor_name") {
-            // Filter by patient's full name
+            // Filter by doctor's full name
             query1 = `
                 SELECT 
                     Doctors_Departments.doctor_department_id,
@@ -1024,7 +1013,7 @@ app.get('/doctors_departments.hbs', function(req, res) {
             `;
             queryParams.push(`%${searchEntry}%`); // Add wildcards for partial matching
         } else if (filterAttribute === "department_name") {
-            // Filter by treatment description
+            // Filter by department name
             query1 = `
                 SELECT 
                     Doctors_Departments.doctor_department_id,
@@ -1056,25 +1045,25 @@ app.get('/doctors_departments.hbs', function(req, res) {
 });
 
 app.get('/add_doctors_departments.hbs', function(req, res){
-    // Query to get all patients
+    // Query to get all Doctors
     let query1 = "SELECT * FROM Doctors;";
 
-    // Query to get all treatments
+    // Query to get all Departments
     let query2 = "SELECT * FROM Departments;";
 
-    // Run the first query to get patients
+    // Run the first query to get doctors
     db.pool.query(query1, function(error, doctors, fields){
         if (error) {
             console.log(error);
             res.sendStatus(400);
         } else {
-            // Run the second query to get treatments
+            // Run the second query to get departments
             db.pool.query(query2, function(error, departments, fields){
                 if (error) {
                     console.log(error);
                     res.sendStatus(400);
                 } else {
-                    // Render the template with patients and treatments data
+                    // Render the template with doctors and departments data
                     res.render('add_doctors_departments', {is_doctors_departments: true, doctors: doctors, departments: departments });
                 }
             });
@@ -1085,7 +1074,7 @@ app.get('/add_doctors_departments.hbs', function(req, res){
 app.get('/update_doctors_departments.hbs', function(req, res) {
     let doctor_department_id = parseInt(req.query.doctor_department_id);
 
-    // Query to get the current Patients_Treatments entry
+    // Query to get the current Doctors_Departments entry
     let query1 = `
         SELECT 
             Doctors_Departments.doctor_department_id,
@@ -1104,13 +1093,13 @@ app.get('/update_doctors_departments.hbs', function(req, res) {
             Doctors_Departments.doctor_department_id = ?;
     `;
 
-    // Query to get all patients for the dropdown
+    // Query to get all doctors for the dropdown
     let query2 = "SELECT * FROM Doctors;";
 
-    // Query to get all treatments for the dropdown
+    // Query to get all departments for the dropdown
     let query3 = "SELECT * FROM Departments;";
 
-    // Execute the first query to get the current Patients_Treatments entry
+    // Execute the first query to get the current Doctors_Departments entry
     db.pool.query(query1, [doctor_department_id], function(error, rows, fields) {
         if (error) {
             console.log(error);
@@ -1118,19 +1107,19 @@ app.get('/update_doctors_departments.hbs', function(req, res) {
         } else {
             let currentData = rows[0]; // Get the first row (current data)
 
-            // Execute the second query to get all patients
+            // Execute the second query to get all doctors
             db.pool.query(query2, function(error, doctors, fields) {
                 if (error) {
                     console.log(error);
                     res.sendStatus(400);
                 } else {
-                    // Execute the third query to get all treatments
+                    // Execute the third query to get all departments
                     db.pool.query(query3, function(error, departments, fields) {
                         if (error) {
                             console.log(error);
                             res.sendStatus(400);
                         } else {
-                            // Render the update form with the current data, patients, and treatments
+                            // Render the update form with the current data, doctors, and departments
                             res.render('update_doctors_departments', {
                                 is_doctors_departments: true,
                                 data: currentData,
@@ -1148,7 +1137,6 @@ app.get('/update_doctors_departments.hbs', function(req, res) {
 app.post('/add_doctors_departments-ajax', function(req, res) {
     let data = req.body;
 
-    // Handle NULL values for patient_id
     let doctor_id = parseInt(data.doctor_id);
     let department_id = parseInt(data.department_id);
 
@@ -1161,7 +1149,7 @@ app.post('/add_doctors_departments-ajax', function(req, res) {
         } 
         else
         {
-            // If there was no error, perform a SELECT * on bsg_people
+            // If there was no error, perform a SELECT * on Doctors_Departments
             let query2 = `SELECT * FROM Doctors_Departments;`;
             db.pool.query(query2, function(error, rows, fields){
 
@@ -1190,7 +1178,7 @@ app.put('/put-doctor-department-ajax', function(req, res) {
     let doctor_id = parseInt(data.doctor_id);
     let department_id = parseInt(data.department_id);
 
-    // Query to update the Patients_Treatments entry
+    // Query to update the Doctors_Departments entry
     let query = `
         UPDATE Doctors_Departments 
         SET 
