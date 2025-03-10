@@ -1,3 +1,9 @@
+// Citation for the following functions:
+// Date: 3/7/25
+// Adapted from 
+// The code structure and logic were inspired by the Node.js Starter App repository, but the implementation was tailored to fit the specific requirements of a Hospital Management Database. No code was directly copied; instead, the patterns and best practices were followed.
+// Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main
+
 document.getElementById('confirm-button').addEventListener('click', function() {
     // Gather the data from the form
     let treatment_id = document.getElementById('treatment_id').value;
