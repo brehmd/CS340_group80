@@ -1,135 +1,161 @@
 -- DML.sql - Updated Queries (Based on Actions Taken & Feedback)
+-- DML.sql - Updated Queries Based on app.js
 
--- SELECT Queries with FK Names instead of IDs
+-- Retrieve all patients with optional search filter
+SELECT patient_id, first_name, last_name, age, phone_number, esi_level
+FROM Patients
+WHERE ${filter_attributes} LIKE "${search_entry}%";
 
--- Retrieve all patients (Now including esi_level as VARCHAR)
-SELECT patient_id, 
-       CONCAT(first_name, ' ', last_name) AS patient_name, 
-       age, 
-       phone_number, 
-       esi_level  -- No longer an FK, now stored directly in Patients
-FROM Patients;
+-- Retrieve all treatments with optional search filter
+SELECT treatment_id, description, cost
+FROM Treatments
+WHERE ${filter_attributes} LIKE "${search_entry}%";
 
--- Retrieve all doctors
-SELECT doctor_id, CONCAT(first_name, ' ', last_name) AS doctor_name, specialization 
-FROM Doctors;
+-- Retrieve all doctors with optional search filter
+SELECT doctor_id, first_name, last_name, specialization
+FROM Doctors
+WHERE ${filter_attributes} LIKE "${search_entry}%";
 
--- Retrieve all departments
-SELECT department_id, name, location 
-FROM Departments;
+-- Retrieve all departments with optional search filter
+SELECT department_id, name, location
+FROM Departments
+WHERE ${filter_attributes} LIKE "${search_entry}%";
 
--- Retrieve all treatments
-SELECT treatment_id, description, cost 
-FROM Treatments;
-
--- Retrieve all appointments with names instead of IDs (Ensuring user-friendly FK representation)
-SELECT a.appointment_id, 
-       CONCAT(p.first_name, ' ', p.last_name) AS patient_name, 
-       CONCAT(d.first_name, ' ', d.last_name) AS doctor_name, 
-       dept.name AS department_name, 
-       a.appointment_date, 
-       a.appointment_time, 
-       a.reason
+-- Retrieve all appointments with patient, doctor, and department names
+SELECT 
+    a.appointment_id,
+    CONCAT(p.first_name, ' ', p.last_name) AS patient_name,
+    CONCAT(d.first_name, ' ', d.last_name) AS doctor_name,
+    dept.name AS department_name,
+    a.appointment_date,
+    a.appointment_time,
+    a.reason
 FROM Appointments a
 LEFT JOIN Patients p ON a.patient_id = p.patient_id
 LEFT JOIN Doctors d ON a.doctor_id = d.doctor_id
-LEFT JOIN Departments dept ON a.department_id = dept.department_id;
+JOIN Departments dept ON a.department_id = dept.department_id;
 
--- Insert Queries using subqueries to dynamically retrieve FK values
-INSERT INTO Appointments (patient_id, doctor_id, department_id, appointment_date, appointment_time, reason)
-VALUES 
-    ((SELECT patient_id FROM Patients WHERE first_name = ? AND last_name = ?),
-     (SELECT doctor_id FROM Doctors WHERE first_name = ? AND last_name = ?),
-     (SELECT department_id FROM Departments WHERE name = ?), ?, ?, ?);
+-- Retrieve all patients for dropdown
+SELECT patient_id, CONCAT(first_name, ' ', last_name) AS patient_name
+FROM Patients;
 
--- Insert for intersection tables
-INSERT INTO Patients_Treatments (patient_id, treatment_id)
-VALUES 
-    ((SELECT patient_id FROM Patients WHERE first_name = ? AND last_name = ?), 
-     (SELECT treatment_id FROM Treatments WHERE description = ?));
+-- Retrieve all doctors for dropdown
+SELECT doctor_id, CONCAT(first_name, ' ', last_name) AS doctor_name
+FROM Doctors;
 
-INSERT INTO Doctors_Departments (doctor_id, department_id)
-VALUES 
-    ((SELECT doctor_id FROM Doctors WHERE first_name = ? AND last_name = ?), 
-     (SELECT department_id FROM Departments WHERE name = ?));
+-- Retrieve all departments for dropdown
+SELECT department_id, name
+FROM Departments;
 
--- Safe Update for Appointments (Allowing NULL for FK safety)
-UPDATE Appointments
-SET patient_id = COALESCE((SELECT patient_id FROM Patients WHERE first_name = ? AND last_name = ?), NULL),
-    doctor_id = COALESCE((SELECT doctor_id FROM Doctors WHERE first_name = ? AND last_name = ?), NULL),
-    department_id = (SELECT department_id FROM Departments WHERE name = ?),
-    appointment_date = ?, 
-    appointment_time = ?, 
-    reason = ?
-WHERE appointment_id = ?;
+-- Retrieve all treatments for dropdown
+SELECT treatment_id, description
+FROM Treatments;
 
--- Safe Deletion of Patients (Preserving Appointments' history)
-UPDATE Appointments SET patient_id = NULL WHERE patient_id = ?;
-DELETE FROM Patients WHERE patient_id = ?;
-
--- Retrieve doctors in a specific department with readable names
-SELECT d.doctor_id, CONCAT(d.first_name, ' ', d.last_name) AS doctor_name, d.specialization
-FROM Doctors d
-JOIN Doctors_Departments dd ON d.doctor_id = dd.doctor_id
-JOIN Departments dept ON dd.department_id = dept.department_id
-WHERE dept.name = ?;
-
--- Retrieve treatments for a specific patient (Ensuring names instead of IDs)
-SELECT pt.patient_treatment_id, 
-       CONCAT(p.first_name, ' ', p.last_name) AS patient_name, 
-       t.description AS treatment_description, 
-       t.cost
-FROM Patients_Treatments pt
-JOIN Patients p ON pt.patient_id = p.patient_id
-JOIN Treatments t ON pt.treatment_id = t.treatment_id
-WHERE p.first_name = ? AND p.last_name = ?;
-
--- Dropdown Queries for Forms
-SELECT patient_id, CONCAT(first_name, ' ', last_name) AS patient_name FROM Patients;
-SELECT doctor_id, CONCAT(first_name, ' ', last_name, ' - ', specialization) AS doctor_info FROM Doctors;
-SELECT department_id, name FROM Departments;
-SELECT treatment_id, description FROM Treatments;
-
--- Retrieve all Patients_Treatments with names instead of IDs
-SELECT pt.patient_treatment_id, 
-       CONCAT(p.first_name, ' ', p.last_name) AS patient_name, 
-       t.description AS treatment_description
-FROM Patients_Treatments pt
-JOIN Patients p ON pt.patient_id = p.patient_id
-JOIN Treatments t ON pt.treatment_id = t.treatment_id;
-
--- Retrieve all Doctors_Departments with names instead of IDs
-SELECT dd.doctor_department_id, 
-       CONCAT(d.first_name, ' ', d.last_name) AS doctor_name, 
-       dept.name AS department_name
-FROM Doctors_Departments dd
-JOIN Doctors d ON dd.doctor_id = d.doctor_id
-JOIN Departments dept ON dd.department_id = dept.department_id;
-
--- Insert Queries using subqueries for FK values
+-- Insert a new patient
 INSERT INTO Patients (first_name, last_name, age, phone_number, esi_level)
-VALUES (?, ?, ?, ?, ?); -- esi_level is now a VARCHAR and no longer references ESI_Index
+VALUES (?, ?, ?, ?, ?);
 
-INSERT INTO Doctors (first_name, last_name, specialization)
-VALUES (?, ?, ?);
-
-INSERT INTO Departments (name, location)
-VALUES (?, ?);
-
+-- Insert a new treatment
 INSERT INTO Treatments (description, cost)
 VALUES (?, ?);
 
--- Update patient treatment relationships safely
+-- Insert a new doctor
+INSERT INTO Doctors (first_name, last_name, specialization)
+VALUES (?, ?, ?);
+
+-- Insert a new department
+INSERT INTO Departments (name, location)
+VALUES (?, ?);
+
+-- Insert a new appointment
+INSERT INTO Appointments (patient_id, doctor_id, department_id, appointment_date, appointment_time, reason)
+VALUES (?, ?, ?, ?, ?, ?);
+
+-- Insert a new patient-treatment relationship
+INSERT INTO Patients_Treatments (patient_id, treatment_id)
+VALUES (?, ?);
+
+-- Insert a new doctor-department relationship
+INSERT INTO Doctors_Departments (doctor_id, department_id)
+VALUES (?, ?);
+
+-- Update a patient
+UPDATE Patients
+SET first_name = ?, last_name = ?, age = ?, phone_number = ?, esi_level = ?
+WHERE patient_id = ?;
+
+-- Update a treatment
+UPDATE Treatments
+SET description = ?, cost = ?
+WHERE treatment_id = ?;
+
+-- Update a doctor
+UPDATE Doctors
+SET first_name = ?, last_name = ?, specialization = ?
+WHERE doctor_id = ?;
+
+-- Update a department
+UPDATE Departments
+SET name = ?, location = ?
+WHERE department_id = ?;
+
+-- Update an appointment
+UPDATE Appointments
+SET patient_id = ?, doctor_id = ?, department_id = ?, appointment_date = ?, appointment_time = ?, reason = ?
+WHERE appointment_id = ?;
+
+-- Update a patient-treatment relationship
 UPDATE Patients_Treatments
-SET patient_id = (SELECT patient_id FROM Patients WHERE first_name = ? AND last_name = ?),
-    treatment_id = (SELECT treatment_id FROM Treatments WHERE description = ?)
+SET patient_id = ?, treatment_id = ?
 WHERE patient_treatment_id = ?;
 
--- Safe Deletion with Cascading Constraints
+-- Update a doctor-department relationship
+UPDATE Doctors_Departments
+SET doctor_id = ?, department_id = ?
+WHERE doctor_department_id = ?;
+
+-- Delete a patient
+UPDATE Appointments SET patient_id = NULL WHERE patient_id = ?;
+DELETE FROM Patients_Treatments WHERE patient_id = ?;
 DELETE FROM Patients WHERE patient_id = ?;
-DELETE FROM Doctors WHERE doctor_id = ?;
-DELETE FROM Departments WHERE department_id = ?;
+
+-- Delete a treatment
+DELETE FROM Patients_Treatments WHERE treatment_id = ?;
 DELETE FROM Treatments WHERE treatment_id = ?;
+
+-- Delete a doctor
+UPDATE Appointments SET doctor_id = NULL WHERE doctor_id = ?;
+DELETE FROM Doctors_Departments WHERE doctor_id = ?;
+DELETE FROM Doctors WHERE doctor_id = ?;
+
+-- Delete a department
+DELETE FROM Appointments WHERE department_id = ?;
+DELETE FROM Doctors_Departments WHERE department_id = ?;
+DELETE FROM Departments WHERE department_id = ?;
+
+-- Delete an appointment
 DELETE FROM Appointments WHERE appointment_id = ?;
-DELETE FROM Doctors_Departments WHERE doctor_department_id = ?;
+
+-- Delete a patient-treatment relationship
 DELETE FROM Patients_Treatments WHERE patient_treatment_id = ?;
+
+-- Delete a doctor-department relationship
+DELETE FROM Doctors_Departments WHERE doctor_department_id = ?;
+
+-- Retrieve all patient-treatment relationships with names
+SELECT 
+    pt.patient_treatment_id,
+    CONCAT(p.first_name, ' ', p.last_name) AS patient_name,
+    t.description AS treatment_description
+FROM Patients_Treatments pt
+LEFT JOIN Patients p ON pt.patient_id = p.patient_id
+LEFT JOIN Treatments t ON pt.treatment_id = t.treatment_id;
+
+-- Retrieve all doctor-department relationships with names
+SELECT 
+    dd.doctor_department_id,
+    CONCAT(d.first_name, ' ', d.last_name) AS doctor_name,
+    dept.name AS department_name
+FROM Doctors_Departments dd
+LEFT JOIN Doctors d ON dd.doctor_id = d.doctor_id
+LEFT JOIN Departments dept ON dd.department_id = dept.department_id;
