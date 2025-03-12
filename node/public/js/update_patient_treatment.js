@@ -18,7 +18,13 @@ document.getElementById('confirm-button').addEventListener('click', function() {
 
     // Use previous values if the input fields are empty
     if (patient_id == "none") {
-        patient_id = prev_pname;
+        // If the previous patient_id is NULL or empty, keep it as NULL
+        if (prev_pname === "NULL" || prev_pname === null || prev_pname === "") {
+            patient_id = "NULL";
+        } 
+        else {
+            patient_id = prev_pname;
+        }
     }
     if (treatment_id == "none") {
         treatment_id = prev_tdesc;

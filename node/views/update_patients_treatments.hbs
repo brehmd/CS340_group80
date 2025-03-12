@@ -13,7 +13,13 @@
             </tr>
 
             <tr>
-                <td id="prev_pname" data-prev-pid="{{data.patient_id}}">{{data.patient_first_name}} {{data.patient_last_name}}</td>
+                <td id="prev_pname" data-prev-pid="{{data.patient_id}}">
+                    {{#if data.patient_first_name}}
+                        {{data.patient_first_name}} {{data.patient_last_name}}
+                    {{else}}
+                        NULL
+                    {{/if}}
+                </td>
                 <td id="prev_tdesc" data-prev-tid="{{data.treatment_id}}">{{data.treatment_description}}</td>
             </tr>
 

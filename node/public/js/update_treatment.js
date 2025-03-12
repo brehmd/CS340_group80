@@ -28,6 +28,12 @@ document.getElementById('confirm-button').addEventListener('click', function() {
         return; // Stop the function execution if any field is empty
     }
 
+    // Check if the cost is negative
+    if (costValue < 0) {
+        alert('Cost cannot be negative. Please enter a non-negative value.');
+        return; // Stop the function execution if the cost is negative
+    }
+
     // Create a JavaScript object to hold the data
     let data = {
         treatment_id: treatment_id,

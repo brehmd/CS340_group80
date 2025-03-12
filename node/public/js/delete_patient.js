@@ -30,11 +30,10 @@ function deletePatient(patient_id) {
     // Send the request and wait for the response
     xhttp.send(JSON.stringify(data));
 
-    location.reload();
 }
 
 function deleteRow(patient_id){
-    let table = document.getElementById("display-table");
+    let table = document.querySelector("#display-table table");
     for (let i = 0, row; row = table.rows[i]; i++) {
        if (table.rows[i].getAttribute("data-value") == patient_id) {
             table.deleteRow(i);

@@ -29,12 +29,10 @@ function deleteAppointment(appointment_id) {
     // Send the request and wait for the response
     xhttp.send(JSON.stringify(data));
 
-    // Reload the page to reflect the changes
-    location.reload();
 }
 
 function deleteRow(appointment_id) {
-    let table = document.getElementById("display-table");
+    let table = document.querySelector("#display-table table");
     for (let i = 0, row; row = table.rows[i]; i++) {
         // Check if the row's data-value matches the appointment_id
         if (table.rows[i].getAttribute("data-value") == appointment_id) {

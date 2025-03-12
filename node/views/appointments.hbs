@@ -16,10 +16,22 @@
             </tr>
 
             {{#each data}}
-            <tr class = "Appointments-info">
+            <tr class = "Appointments-info" data-value="{{this.appointment_id}}">
                 <th>{{this.appointment_id}}</th>
-                <td>{{this.patient_full_name}}</td>
-                <td>{{this.doctor_full_name}}</td>
+                <td>
+                    {{#if this.patient_full_name}}
+                        {{this.patient_full_name}}
+                    {{else}}
+                        [none]
+                    {{/if}}
+                </td>
+                <td>
+                    {{#if this.doctor_full_name}}
+                        {{this.doctor_full_name}}
+                    {{else}}
+                        [none]
+                    {{/if}}
+                </td>
                 <td>{{this.department_name}}</td>
                 <td>{{this.appointment_date}}</td>
                 <td>{{this.appointment_time}}</td>
@@ -38,6 +50,4 @@
     <div id="buttons">
         <a href="/add_appointments.hbs"><button type="button" id="add-new-button">Add Appointments</button></a>
     </div>
-    
-
 </div>

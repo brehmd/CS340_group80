@@ -28,6 +28,7 @@
             
 
             {{#each data}}
+            
             <tr data-value="{{this.patient_id}}" class="Patients-info">
                 <th id="patient_id">{{this.patient_id}}</th>
                 <td>{{this.first_name}}</td>
@@ -46,7 +47,6 @@
                 </th>
             </tr>
             {{/each}}
-
         </table>
     </div>
 
@@ -55,6 +55,5 @@
     <div id="buttons">
         <a href = "/add_patients.hbs"><button type="button" id = "add-new-button">Add Patients</button></a>
     </div>
-            
 
 </div>

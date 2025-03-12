@@ -28,6 +28,12 @@ addTreatmentButton.addEventListener("click", function (e) {
         return; // Stop the function execution if any field is empty
     }
 
+    // Check if the cost is negative
+    if (costValue < 0) {
+        alert('Cost cannot be negative. Please enter a non-negative value.');
+        return; // Stop the function execution if the cost is negative
+    }
+
     // Put our data we want to send in a javascript object
     let data = {
         description: descValue,

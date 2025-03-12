@@ -21,7 +21,7 @@
             </tr>
 
             {{#each data}}
-            <tr class = "Doctors_Departments-info">
+            <tr class = "Doctors_Departments-info" data-value="{{this.doctor_department_id}}">
                 <th>{{this.doctor_department_id}}</th>
                 <td>{{this.doctor_first_name}} {{this.doctor_last_name}}</td>
                 <td>{{this.department_name}}</td>

@@ -9,7 +9,7 @@
         <input type="text" name=search_entry id = search_entry>
         <input type="submit">
         <a href="/treatments.hbs"><button type="button">Reset</button></a>
-    </div>
+    </form>
 
     <div id = display-table>
         <table>
@@ -23,7 +23,7 @@
 
             {{#each data}}
 
-            <tr data-value="{{this.patient_id}}" class = "Treatments-info">
+            <tr data-value="{{this.treatment_id}}" class = "Treatments-info">
                 <th id ="treatment_id">{{this.treatment_id}}</th>
                 <td>{{this.description}}</td>
                 <td>${{this.cost}}</td>

@@ -20,9 +20,15 @@
             </tr>
 
             {{#each data}}
-            <tr class="Patients_Treatments-info">
+            <tr class="Patients_Treatments-info" data-value="{{this.patient_treatment_id}}">
                 <th>{{this.patient_treatment_id}}</th>
-                <td>{{this.patient_first_name}} {{this.patient_last_name}}</td>
+                <td>
+                    {{#if this.patient_first_name}}
+                        {{this.patient_first_name}} {{this.patient_last_name}}
+                    {{else}}
+                        [none]
+                    {{/if}}
+                </td>
                 <td>{{this.treatment_description}}</td>
                 <th>
                     <form id="update-patient" method="GET" action="/update_patients_treatments.hbs">
